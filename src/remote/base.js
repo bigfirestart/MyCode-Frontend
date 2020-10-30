@@ -1,12 +1,14 @@
-import axios, { AxiosRequestConfig } from "axios";
-
-const BASE_URL = process.env.REACT_APP_BASE_URL;
-
-if (!BASE_URL) {
-    throw new Error("REACT_APP_BASE_URL must be provided");
-}
+import axios from "axios";
+import { AUTH_HEADER, BASE_URL, LOCALSTORAGE_TOKEN_KEY } from "../constants";
 
 export const axiosInstance = axios.create({
-    baseURL: `${BASE_URL}/api`,
-    withCredentials: true
-})
+    baseURL: `${BASE_URL}/api`
+});
+
+axiosInstance.interceptors.request.use(
+    (config) => {
+        const token = localStorage.getItem(LOCALSTORAGE_TOKEN_KEY);
+        config.headers[AUTH_HEADER] = token;
+        return config;
+    }
+);

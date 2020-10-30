@@ -7,7 +7,6 @@ import {
 } from "react-router-dom";
 import { Footer } from "./components/Footer/Footer";
 import { Header } from "./components/Header/Header";
-import { SideBar } from "./components/SideBar/SideBar";
 import { AuthPage } from "./pages/shared/AuthPage/AuthPage";
 import { checkToken } from "./remote/auth";
 import { LOCALSTORAGE_ROLE_KEY, STUDENT_ROLE, TEACHER_ROLE } from "./constants";
@@ -48,7 +47,6 @@ class App extends React.Component {
             <Router>
                 <div className="App">
                     <Header />
-                    <SideBar />
                     {
                         checkingAuthentication &&
                         <div>Проверка аутентификации</div>

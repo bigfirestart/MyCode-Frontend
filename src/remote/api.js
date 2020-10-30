@@ -27,21 +27,23 @@ import {axiosInstance} from "./base"
  * @property {ShortTask} task
  *
  * @typedef Error
- * @property {int} failedTest
+ * @property {number} failedTest
  * @property {"CE"|"TL"|"ML"|"RE"} status
  *
  * @typedef SubmissionResult
  * @property {string} taskId
  * @property {Date} timestamp
- * @property {int} points: int
+ * @property {number} points: int
  * @property {"CE"|"TL"|"ML"|"RE"|"OK"|"STYLE_ERROR"} status
  * @property {Error[]} errors
  *
  * @typedef Test
- * @property {int} number
+ * @property {number} number
  * @property input
  * @property output
- * @property {int} weight
+ * @property {number} weight
+ * 
+ * @typedef {import("./auth").User} User 
  */
 
 
@@ -85,8 +87,6 @@ export async function postGroup(group) {
         return err;
     }
 }
-
-
 
 //tasks
 /**
@@ -181,7 +181,7 @@ export async function getStudent(groupId, studentId) {
  */
 export async function setGroupToStudent(groupId, studentId) {
     try {
-        const response = await axiosInstance.post(`/groups/${groupId}/students`, {
+        await axiosInstance.post(`/groups/${groupId}/students`, {
                 params: {
                     id: studentId
                 }
