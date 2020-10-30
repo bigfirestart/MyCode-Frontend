@@ -1,5 +1,84 @@
 import {axiosInstance} from "./base"
 
+/**
+ * SignInRequest {
+  username
+  password
+}
+
+User {
+  id
+  username
+  password
+  name
+  surname
+  middlename
+  email
+  dateOfBirth
+  role # Temporary
+}
+
+Task {
+  id
+  problem
+  samples [
+    {
+      input
+      output
+    }
+  ]
+  deadline: Date
+  timeLimit
+  memoryLimit
+  testType: TEST/VALIDATION
+  postprocessorType: EASY/HARD
+  submissions: SubmissionResult[]
+}
+
+SubmissionResult {
+  taskId: UUID
+  timestamp: Date
+  status: CE/TL/ML/RE/OK/STYLE_ERROR
+  errors: [
+    {
+      failedTest: int
+      status: CE/TL/ML/RE
+    }
+  ]
+}
+
+Test {
+  number
+  input
+  output
+  weight
+}
+
+Validation {
+  generator
+  validator
+  testCount
+}
+ */
+
+/**
+ * @typedef Group
+ * @property {string} id
+ * @property {string} name
+ * @property {string[]} students UUID[] # ids, only for teachers
+ * 
+ * @typedef Task
+ * @property {string} id
+ * @property {string} problem
+ * @property {{ input: string, output: string }[]} samples
+ * @property {Date} deadline
+ * @property {number} timeLimit
+ * @property {number} memoryLimit
+ * @property {"TEST"|"VALIDATION"} testType
+ * @property {"EASY"|"HARD"} postprocessorType
+ * @property {SubmissionResult[]} submissions
+ */
+
 //groups
 export async function getGroupsList() {
     try {
@@ -10,6 +89,9 @@ export async function getGroupsList() {
     }
 }
 
+/**
+ * @param {string} groupId 
+ */
 export async function getGroup(groupId) {
     try {
         const response = await axiosInstance.get(`/groups/${groupId}`);
