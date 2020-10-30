@@ -3,6 +3,7 @@ import {
     BrowserRouter as Router,
     Switch,
     Route,
+    Redirect
 } from "react-router-dom";
 import { Footer } from "./components/Footer/Footer";
 import { Header } from "./components/Header/Header";
@@ -58,6 +59,9 @@ class App extends React.Component {
                         <Switch>
                             {
                                 role === STUDENT_ROLE && <>
+                                    {/** Дефолтная страница для ученика - это задания */}
+                                    <Redirect to="/tasks" />
+
                                     <Route exact path="/tasks">
                                         <TaskExplorerPage />
                                     </Route>
