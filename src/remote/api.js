@@ -1,67 +1,6 @@
 import {axiosInstance} from "./base"
 
 /**
- * SignInRequest {
-  username
-  password
-}
-
-User {
-  id
-  username
-  password
-  name
-  surname
-  middlename
-  email
-  dateOfBirth
-  role # Temporary
-}
-
-Task {
-  id
-  problem
-  samples [
-    {
-      input
-      output
-    }
-  ]
-  deadline: Date
-  timeLimit
-  memoryLimit
-  testType: TEST/VALIDATION
-  postprocessorType: EASY/HARD
-  submissions: SubmissionResult[]
-}
-
-SubmissionResult {
-  taskId: UUID
-  timestamp: Date
-  status: CE/TL/ML/RE/OK/STYLE_ERROR
-  errors: [
-    {
-      failedTest: int
-      status: CE/TL/ML/RE
-    }
-  ]
-}
-
-Test {
-  number
-  input
-  output
-  weight
-}
-
-Validation {
-  generator
-  validator
-  testCount
-}
- */
-
-/**
  * @typedef Group
  * @property {string} id
  * @property {string} name
@@ -77,9 +16,40 @@ Validation {
  * @property {"TEST"|"VALIDATION"} testType
  * @property {"EASY"|"HARD"} postprocessorType
  * @property {SubmissionResult[]} submissions
+ *
+ * @typedef ShortTask
+ * @property {string} id
+ * @property {string} problem
+ * @property {Date} deadline
+ *
+ * @typedef GroupTask
+ * @property {string} groupId
+ * @property {ShortTask} task
+ *
+ * @typedef Error
+ * @property {int} failedTest
+ * @property {"CE"|"TL"|"ML"|"RE"} status
+ *
+ * @typedef SubmissionResult
+ * @property {string} taskId
+ * @property {Date} timestamp
+ * @property {int} points: int
+ * @property {"CE"|"TL"|"ML"|"RE"|"OK"|"STYLE_ERROR"} status
+ * @property {Error[]} errors
+ *
+ * @typedef Test
+ * @property {int} number
+ * @property input
+ * @property output
+ * @property {int} weight
  */
 
+
+
 //groups
+/**
+ * @return {Promise<Group[]>}
+ */
 export async function getGroupsList() {
     try {
         const response = await axiosInstance.get(`/groups`);
@@ -90,7 +60,8 @@ export async function getGroupsList() {
 }
 
 /**
- * @param {string} groupId 
+ * @param {string} groupId
+ * @return {Promise<Group>}
  */
 export async function getGroup(groupId) {
     try {
@@ -101,8 +72,27 @@ export async function getGroup(groupId) {
     }
 }
 
+//How about
+/**
+ * @param {Group} group
+ * @return {Promise<Group>}
+ */
+export async function postGroup(group) {
+    try {
+        const response = await axiosInstance.post(`/groups`);
+        return response.data
+    } catch (err) {
+        return err;
+    }
+}
+
+
 
 //tasks
+/**
+ * @param {string} groupId
+ * @return {Promise<GroupTask[]>}
+ */
 export async function getTasksList(groupId) {
     try {
         const response = await axiosInstance.get(`/tasks`);
@@ -112,6 +102,10 @@ export async function getTasksList(groupId) {
     }
 }
 
+/**
+ * @param {string} groupId
+ * @return {Promise<Task>}
+ */
 export async function getTask(groupId, taskId) {
     try {
         const response = await axiosInstance.get(`/groups/${groupId}/tasks/${taskId}`);
@@ -122,6 +116,11 @@ export async function getTask(groupId, taskId) {
 }
 
 //submissions
+/**
+ * @param {string} groupId
+ * @param {string} taskId
+ * @return {Promise<SubmissionResult[]>}
+ */
 export async function getTaskSubmissions(groupId, taskId) {
     try {
         const response = await axiosInstance.get(`/groups/${groupId}/tasks/${taskId}/submissions`);
@@ -131,6 +130,12 @@ export async function getTaskSubmissions(groupId, taskId) {
     }
 }
 
+/**
+ * @param {string} groupId
+ * @param {string} taskId
+ * @param {string} submissionId
+ * @return ?
+ */
 export async function getTaskSubmissionCode(groupId, taskId, submissionId) {
     try {
         const response = await axiosInstance.get(`/groups/${groupId}/tasks/${taskId}/submissions/${submissionId}/code`);
@@ -142,6 +147,10 @@ export async function getTaskSubmissionCode(groupId, taskId, submissionId) {
 
 
 //students
+/**
+ * @param {string} groupId
+ * @return {Promise<User[]>}
+ */
 export async function getGroupStudents(groupId) {
     try {
         const response = await axiosInstance.get(`/groups/${groupId}/students`);
@@ -151,6 +160,11 @@ export async function getGroupStudents(groupId) {
     }
 }
 
+/**
+ * @param {string} groupId
+ * @param {string} studentId
+ * @return {Promise<User>}
+ */
 export async function getStudent(groupId, studentId) {
     try {
         const response = await axiosInstance.get(`/groups/${groupId}/students/${studentId}`);
@@ -160,6 +174,11 @@ export async function getStudent(groupId, studentId) {
     }
 }
 
+
+/**
+ * @param {string} groupId
+ * @param {string} studentId
+ */
 export async function setGroupToStudent(groupId, studentId) {
     try {
         const response = await axiosInstance.post(`/groups/${groupId}/students`, {
@@ -168,7 +187,6 @@ export async function setGroupToStudent(groupId, studentId) {
                 }
             }
         );
-        return response.data
     } catch (err) {
         return err;
     }
