@@ -1,11 +1,13 @@
 import React from "react";
-import {Col, ListGroup, Row, Table} from "react-bootstrap";
 import {getTask} from "../../../remote/api";
-import {Link} from "react-router-dom";
+import { SubmissionsTable } from "../../../components/SubmissionsTable/SubmissionsTable";
+import Tabs from "react-bootstrap/Tabs";
+import Tab from "react-bootstrap/Tab";
+import { TaskConstructor } from "../../../components/TaskConstructor/TaskConstructor";
 
 export class TeacherTaskPage extends React.Component {
     state = {
-        task: {}
+        task: null
     }
 
     componentDidMount() {
@@ -16,30 +18,25 @@ export class TeacherTaskPage extends React.Component {
         )
     }
 
-    submissionSet(submission, index) {
-        return <ListGroup.Item>
-            Баллы: {submission.points}  Статус: {submission.status}
-        </ListGroup.Item>
-    }
-
     render() {
-        console.log(this.state.task)
+        const { task } = this.state;
+
+        if (!task) {
+            return <div>Загрузка</div>;
+        }
+
         return <div>
-            <Row className="mt-5">
-                <Col className="green-under-line justify-content-end">
-                    <h2>Задача {this.state.task.name}</h2>
-                </Col>
-            </Row>
-            <Row>
-                Решения
-                <ListGroup className="w-100">
-                    {
-                        this.state.task?.submissions?.map(this.submissionSet)
-                    }
-                </ListGroup>
-            </Row>
+            <h2 className="green-under-line mt-5">Задача {task.name}</h2>
+            <Tabs defaultActiveKey="task-constructor" className="mt-4">
+                <Tab title="Редактировать задание" eventKey="task-constructor">
+                    <TaskConstructor task={task} setTask={(t) => this.setState({ task: t })} />
+                </Tab>
+
+                <Tab title="Результаты" eventKey="task-submissions">
+                    <SubmissionsTable submissions={task.submissions} />
+                </Tab>
+            </Tabs>
         </div>
-
-
     }
 }
+

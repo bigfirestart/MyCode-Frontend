@@ -17,6 +17,20 @@ mock.onGet("/groups/1/tasks/2").reply(200, JSON.stringify({
             output: "3 2 1"
         }
     ],
+    tests: [
+        {
+            input: "3\n1 2 3",
+            output: "3 2 1",
+            weight: 100,
+            number: 1
+        },
+        {
+            input: "3\n1 2 3",
+            output: "3 2 1",
+            weight: 100,
+            number: 1
+        }
+    ],
     deadline: new Date(),
     timeLimit: 2,
     memoryLimit: 1,

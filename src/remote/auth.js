@@ -9,7 +9,7 @@ import {
 import MockAdapter from "axios-mock-adapter";
 
 const axiosInst = axios.create({
-    baseURL: BASE_URL
+    baseURL: "https://mycode-hack.herokuapp.com"
 });
 
 /**
@@ -90,7 +90,7 @@ const userMock = {
     middlename: "Петрович",
     email: "f@f.com",
     dateOfBirth: "28.04.2005",
-    role: STUDENT_ROLE
+    role: TEACHER_ROLE
 }
 mock.onPost("/sign-in").reply(200, userMock, { [AUTH_HEADER]: "bla-bla-bla" });
 mock.onPost("/sign-up").reply(200, {}, { [AUTH_HEADER]: "bla-bla-bla" });

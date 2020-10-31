@@ -46,6 +46,7 @@ export function AuthPage({ onAuthenticated }) {
                     onAuthenticated(user);
                 }
                 catch(err) {
+                    console.log(err);
                     setError(err.message);
                 }
             }
