@@ -1,5 +1,5 @@
 import React from "react";
-import {Button, Col, ListGroup, Row, Table} from "react-bootstrap";
+import { Button, Col, ListGroup, Row, Tabs, Tab } from "react-bootstrap";
 import {getGroup, getGroupTasksList} from "../../../remote/api";
 import {Link} from "react-router-dom";
 
@@ -37,32 +37,21 @@ export class GroupPage extends React.Component {
     }
 
     render() {
+        const { tasks } = this.state;
+
         return <div>
-            <Row className="mt-5">
-                <Col className="green-under-line justify-content-end">
-                    <h2>Группа {this.state.group?.name}</h2>
-                </Col>
-            </Row>
-            <Row className="mt-4">
-                <Col lg={11} className="align-items-center"><h4>Задачи</h4></Col>
-                <Col lg={1}><Button>+</Button></Col>
-            </Row>
-            <ListGroup className="mt-3">
-                {
-                    this.state.tasks?.map(this.taskSet)
-                }
-            </ListGroup>
-            <Row className="mt-4">
-                <Col lg={11} className="align-items-center"><h4>Ученики</h4></Col>
-                <Col lg={1}><Button>+</Button></Col>
-            </Row>
-            <ListGroup className="mt-3">
-                {
-                    this.state.group?.students.map(this.studentSet)
-                }
-            </ListGroup>
-        </div>
-
-
+            <h2 className="green-under-line mt-5">Группа {this.state.group?.name}</h2>
+            <Tabs defaultActiveKey="tasks" className="mt-4">
+                <Tab title="Задачи" eventKey="tasks">
+                    <ListGroup className="mt-3">{
+                        tasks?.map(this.taskSet)
+                    }</ListGroup>                </Tab>
+                <Tab title="Ученики" eventKey="students">
+                    <ListGroup className="mt-3">{
+                        this.state.group?.students.map(this.studentSet)
+                    }</ListGroup>
+                </Tab>
+            </Tabs>
+        </div>;
     }
 }
