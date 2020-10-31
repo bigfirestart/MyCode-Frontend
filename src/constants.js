@@ -1,6 +1,6 @@
-export const BASE_URL = "localhost:8000";
+export const BASE_URL = "https://mycode-hack.herokuapp.com";
 export const LOCALSTORAGE_TOKEN_KEY = "access-token";
-export const AUTH_HEADER = "Authorization";
+export const AUTH_HEADER = "authorization";
 export const LOCALSTORAGE_USER_KEY = "user";
 export const STUDENT_ROLE = "STUDENT";
 export const TEACHER_ROLE = "TEACHER";

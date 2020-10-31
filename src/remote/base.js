@@ -2,7 +2,7 @@ import axios from "axios";
 import { AUTH_HEADER, BASE_URL, LOCALSTORAGE_TOKEN_KEY } from "../constants";
 
 export const axiosInstance = axios.create({
-    baseURL: `${BASE_URL}/api`
+    baseURL: BASE_URL
 });
 
 axiosInstance.interceptors.request.use(

@@ -21,12 +21,13 @@ export async function signIn(username, password) {
     try {
         const response = await axiosInst.post("/sign-in", { username, password });
         const token = response.headers[AUTH_HEADER];
+        console.log(response.headers);
         localStorage.setItem(LOCALSTORAGE_TOKEN_KEY, token);
 
         return response.data;
     }
     catch(err) {
-        if (err?.response.status === 401) {
+        if (err.response?.status === 401) {
             throw new Error("Неверно введен логин, либо пароль");
         }
         else {
@@ -80,6 +81,8 @@ export async function checkToken() {
     }
 }
 
+/*
+
 const mock = new MockAdapter(axiosInst);
 
 const userMock = {
@@ -95,3 +98,4 @@ const userMock = {
 mock.onPost("/sign-in").reply(200, userMock, { [AUTH_HEADER]: "bla-bla-bla" });
 mock.onPost("/sign-up").reply(200, {}, { [AUTH_HEADER]: "bla-bla-bla" });
 mock.onGet("/check-token").reply(200, userMock);
+*/

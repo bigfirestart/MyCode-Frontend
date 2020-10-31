@@ -11,7 +11,8 @@ export class TeacherTaskPage extends React.Component {
     }
 
     componentDidMount() {
-        getTask(1, 2).then(
+        const { taskId, groupId } = this.props;
+        getTask(groupId, taskId).then(
             data => this.setState({
                 task: data
             })

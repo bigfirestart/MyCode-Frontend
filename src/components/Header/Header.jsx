@@ -4,6 +4,7 @@ import Nav from "react-bootstrap/Nav";
 import Button from "react-bootstrap/Button";
 import { ROLES, STUDENT_ROLE, TEACHER_ROLE } from "../../constants";
 import { Link } from "react-router-dom";
+import { ReactComponent as ReactLogo } from "./logo.svg";
 
 export class Header extends React.Component {
     static defaultProps = {
@@ -21,7 +22,11 @@ export class Header extends React.Component {
         } = this.props;
 
         return <Navbar bg="dark" variant="dark" expand="lg">
-            <Navbar.Brand>Мой|Код</Navbar.Brand>
+            <Navbar.Brand>
+                <div className="ml-4">
+                    <ReactLogo />
+                </div>
+            </Navbar.Brand>
             <Navbar.Toggle />
             {
                 isAuthenticated &&

@@ -15,7 +15,7 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import {TaskPage} from "./pages/platform/TaskPage/TaskPage";
-import "../src/remote/mock";
+ // import "../src/remote/mock";
 import {GroupExplorerPage} from "./pages/teacher/GroupExplorerPage/GroupExplorerPage";
 import {TeacherTaskPage} from "./pages/teacher/TeacherTaskPage/TeacherTaskPage";
 import {TeacherTaskExplorerPage} from "./pages/teacher/TeacherTaskExplorerPage/TeacherTaskExplorerPage";
@@ -120,10 +120,11 @@ class App extends React.Component {
                                                     <TeacherTaskExplorerPage/>
                                                 </Route>
 
-                                                <Route exact path="/tasks/:taskId">
+                                                <Route exact path="/groups/:groupId/tasks/:taskId">
                                                     {
                                                         ({match}) => <TeacherTaskPage
                                                             taskId={match.params.taskId}
+                                                            groupId={match.params.groupId}
                                                         />
                                                     }
                                                 </Route>
