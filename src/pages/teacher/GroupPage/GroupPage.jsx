@@ -124,14 +124,14 @@ export class GroupPage extends React.Component {
                     {
                         this.state.addStudentForm
                             ? <InputGroup className="mt-2">
-                                <FormControl value={this.state.addGroupFormValue} onChange={this.setAddGroupFormValue}
+                                <FormControl
                                              placeholder="ID ученика"
                                              aria-label="ID ученика"
                                              aria-describedby="basic-addon2"
                                 />
                                 <InputGroup.Append>
                                     <Button onClick={this.addNewGroup}>Сохранить</Button>
-                                    <Button onClick={this.openAddTaskForm} variant="outline-primary">Добавить</Button>
+                                    <Button variant="dark" onClick={this.closeAddStudentForm}>Отмена</Button>
                                 </InputGroup.Append>
                             </InputGroup>
                             : <Button className="mt-2" onClick={this.openAddStudentForm}
