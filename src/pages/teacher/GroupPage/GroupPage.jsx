@@ -89,15 +89,11 @@ export class GroupPage extends React.Component {
     }
 
 
-
     render() {
         return <div>
             <h2 className="green-under-line mt-5">Группа {this.state.group?.name}</h2>
             <Tabs defaultActiveKey="tasks" className="mt-4 mb-2">
                 <Tab title="Задания" eventKey="tasks">
-                    <ListGroup>
-                        {this.state.tasks?.map(this.setTask)}
-                    </ListGroup>
                     {
                         this.state.addTaskForm
                             ? <InputGroup className="mt-2">
@@ -116,29 +112,35 @@ export class GroupPage extends React.Component {
                                     <Button variant="dark" onClick={this.closeAddTaskForm}>Отмена</Button>
                                 </InputGroup.Append>
                             </InputGroup>
-                            : <Button className="mt-2" onClick={this.openAddTaskForm} variant="outline-primary">Добавить</Button>
+                            : <Button className="mt-2" onClick={this.openAddTaskForm}
+                                      variant="outline-primary">Добавить</Button>
                     }
+                    <ListGroup className={"mt-2"}>
+                        {this.state.tasks?.map(this.setTask)}
+                    </ListGroup>
                 </Tab>
 
                 <Tab title="Ученики" eventKey="students">
-                    <ListGroup>
-                        {this.state.group?.students.map(this.setStudent)}
-                    </ListGroup>
                     {
                         this.state.addStudentForm
                             ? <InputGroup className="mt-2">
                                 <FormControl value={this.state.addGroupFormValue} onChange={this.setAddGroupFormValue}
-                                            placeholder="ID ученика"
-                                            aria-label="ID ученика"
-                                            aria-describedby="basic-addon2"
+                                             placeholder="ID ученика"
+                                             aria-label="ID ученика"
+                                             aria-describedby="basic-addon2"
                                 />
                                 <InputGroup.Append>
                                     <Button onClick={this.addNewGroup}>Сохранить</Button>
                                     <Button onClick={this.openAddTaskForm} variant="outline-primary">Добавить</Button>
                                 </InputGroup.Append>
                             </InputGroup>
-                            : <Button className="mt-2" onClick={this.openAddStudentForm} variant="outline-primary">Добавить</Button>
+                            : <Button className="mt-2" onClick={this.openAddStudentForm}
+                                      variant="outline-primary">Добавить</Button>
                     }
+                    <ListGroup className="mt-2">
+                        {this.state.group?.students.map(this.setStudent)}
+                    </ListGroup>
+
                 </Tab>
             </Tabs>
         </div>
