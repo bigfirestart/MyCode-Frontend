@@ -33,7 +33,7 @@ class App extends React.Component {
     checkAuthentication = async () => {
         const isAuthenticated = await checkToken();
         this.setState({
-            isAuthenticated: isAuthenticated,
+            isAuthenticated,
             checkingAuthentication: false
         });
     }

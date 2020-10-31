@@ -46,8 +46,6 @@ import {axiosInstance} from "./base"
  * @typedef {import("./auth").User} User 
  */
 
-
-
 //groups
 /**
  * @return {Promise<Group[]>}
@@ -191,6 +189,3 @@ export async function setGroupToStudent(groupId, studentId) {
         return err;
     }
 }
-
-
-
