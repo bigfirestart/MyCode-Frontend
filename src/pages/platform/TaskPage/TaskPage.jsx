@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Tabs from "react-bootstrap/Tabs";
 import Tab from "react-bootstrap/Tab";
 import ReactMarkdown from "react-markdown";
@@ -15,6 +15,7 @@ import "ace-builds/src-noconflict/mode-c_cpp";
 import "ace-builds/src-noconflict/mode-python";
 import "ace-builds/src-noconflict/mode-java";
 import "ace-builds/src-noconflict/theme-xcode";
+import { getTask } from "../../../remote/api";
 
 const TASK_TAB = "task-tab";
 const SUBMISSIONS_TAB = "submissions-tab";
@@ -23,9 +24,22 @@ export function TaskPage({ groupId, taskId }) {
     const [tab, setTab] = useState(TASK_TAB);
     const [sourceCode, setSourceCode] = useState("");
     const [language, setLanguage] = useState("");
+    const [task, setTask] = useState(null);
 
-    /** @type {import("../../../remote/api").Task} */
-    const task = {
+    useEffect(
+        () => {
+            const fetchTasks = async () => {
+                const task = await getTask(groupId, taskId);
+                setTask(task);
+            };
+
+            fetchTasks();
+        },
+        [groupId, taskId]
+    );
+
+    /* @type {import("../../../remote/api").Task} */
+    /* const task = {
         id: taskId,
         problem: "### Hello world\n Task description \n\n Task description \n\n **Bye**",
         samples: [
@@ -44,7 +58,7 @@ export function TaskPage({ groupId, taskId }) {
         testType: "TEST",
         postprocessorType: "EASY",
         submissions: []
-    };
+    }; */
 
     const onUploadFile = (ev) => {
         const file = ev.target.files[0];
@@ -58,6 +72,12 @@ export function TaskPage({ groupId, taskId }) {
         });
         reader.readAsText(file);
     };
+
+    if (!task) {
+        return <div>
+            Загрузка
+        </div>;
+    }
 
     return <div>
         <h2 className="mt-5 green-under-line mb-4">Название задачи</h2>

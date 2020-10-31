@@ -39,8 +39,8 @@ import {axiosInstance} from "./base"
  *
  * @typedef Test
  * @property {number} number
- * @property input
- * @property output
+ * @property {string} input
+ * @property {string} output
  * @property {number} weight
  * 
  * @typedef {import("./auth").User} User 
@@ -112,6 +112,20 @@ export async function getTask(groupId, taskId) {
     }
 }
 
+/**
+ * @param {string} taskId
+ * @return {Promise<Test[]>}
+ */
+export async function getTaskTests(groupId, taskId) {
+    try {
+        const response = await axiosInstance.get(`/groups/${groupId}/tasks/${taskId}/tests`);
+        return response.data;
+    }
+    catch(err) {
+        return err;
+    }
+}
+
 //submissions
 /**
  * @param {string} groupId
@@ -170,7 +184,6 @@ export async function getStudent(groupId, studentId) {
         return err;
     }
 }
-
 
 /**
  * @param {string} groupId

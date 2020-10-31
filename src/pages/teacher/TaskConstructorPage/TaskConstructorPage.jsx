@@ -1,19 +1,60 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
 import Tabs from "react-bootstrap/Tabs";
 import Tab from "react-bootstrap/Tab";
 import ReactMarkdown from "react-markdown";
+import { getTaskTests, getTask } from "../../../remote/api";
 
-export function TaskConstructorPage() {
+export function TaskConstructorPage({ groupId, taskId }) {
+    /** @type {import("../../../remote/api").Task & { tests: import("../../../remote/api").Test[] }} */
+    const initTask = taskId
+        ? null
+        : {
+            id: null,
+            problem: "",
+            tests: [{
+                number: 1,
+                input: "",
+                output: "",
+                weight: 100
+            }],
+            samples: [{
+                input: "",
+                output: ""
+            }],
+            deadline: new Date(),
+            timeLimit: 1000,
+            memoryLimit: 1000,
+            testType: "TEST",
+            postprocessorType: "EASY",
+            submissions: []
+        };
+    
     const [validated, setValidated] = useState(false);
-    const [problem, setProblem] = useState("");
-    const [tests, setTests] = useState([{
-        input: "",
-        output: "",
-        weight: 1
-    }]);
+    const [task, setTask] = useState(initTask);
+
+    useEffect(
+        () => {
+            if (!taskId) {
+                return;
+            }
+
+            const fetchTask = async () => {
+                const taskData = await getTask(groupId, taskId);
+                const tests = await getTaskTests(groupId, taskId);
+
+                setTask({
+                    ...taskData,
+                    tests
+                });
+            };
+
+            fetchTask();
+        },
+        [groupId, taskId]
+    );
 
     const handleSubmit = async (ev) => {
         ev.preventDefault();
@@ -22,24 +63,40 @@ export function TaskConstructorPage() {
     };
 
     const setTest = (newTest, i) => {
-        const newTests = [...tests];
-        newTests[i] = newTest;
-        setTests(newTests);
+        const newTask = {
+            ...task,
+            tests: task.tests.map(
+                (test, j) => i === j ? newTest : test
+            )
+        };
+
+        setTask(newTask);
     }
 
     const addTest = () => {
-        setTests([
-            ...tests,
-            {
-                input: "",
-                output: "",
-                weight: 100
-            }
-        ])
+        setTask({
+            ...task,
+            tests: [
+                ...task.tests,
+                {
+                    input: "",
+                    output: "",
+                    weight: 100,
+                    number: task.tests.length + 1
+                }
+            ]
+        });
+    };
+
+    const setProblem = (problem) => {
+        setTask({
+            ...task,
+            problem
+        });
     };
 
     return <div>
-        <h2 className="green-under-line">Новое задание</h2>
+        <h2 className="green-under-line mt-5">Новое задание</h2>
         <Form
             className="mt-3" 
             noValidate 
@@ -64,7 +121,7 @@ export function TaskConstructorPage() {
                             <Form.Group>
                                 <Form.Control
                                     as="textarea"
-                                    value={problem}
+                                    value={task.problem}
                                     onChange={(ev) => setProblem(ev.target.value)}
                                     placeholder="Введите **markdown** текст сюда"
                                     style={{
@@ -77,7 +134,7 @@ export function TaskConstructorPage() {
                     </Tab>
                     <Tab title="Превью" eventKey="preview-legend">
                         <ReactMarkdown className="mt-2">
-                            {problem}
+                            {task.problem}
                         </ReactMarkdown>
                     </Tab>
                 </Tabs>
@@ -95,9 +152,9 @@ export function TaskConstructorPage() {
                 </thead>
                 <tbody>
                     {
-                        tests.map(
+                        task.tests.map(
                             (sample, i) => <Form as="tr">
-                                <th>{i + 1}</th>
+                                <th>{sample.number}</th>
                                 <Form.Group as="th">
                                     <Form.Control
                                         as="textarea"
@@ -145,7 +202,7 @@ export function TaskConstructorPage() {
                         )    
                     }
                     <tr>
-                        <th>{tests.length + 1}</th>
+                        <th>{task.tests.length + 1}</th>
                         <th colSpan={3}>
                             <Button
                                 variant="outline-primary"

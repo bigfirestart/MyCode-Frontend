@@ -40,3 +40,23 @@ mock.onGet("/groups").reply(200, [
     }]
 );
 
+mock.onGet("/groups/1/tasks/2").reply(200, {
+    id: 2,
+    problem: "### Hello world\n Task description \n\n Task description \n\n **Byertrt**",
+    samples: [
+        {
+            input: "3\n1 2 3",
+            output: "3 2 1"
+        },
+        {
+            input: "3\n1 2 3",
+            output: "3 2 1"
+        }
+    ],
+    deadline: new Date(),
+    timeLimit: 2,
+    memoryLimit: 1,
+    testType: "TEST",
+    postprocessorType: "EASY",
+    submissions: []
+});
