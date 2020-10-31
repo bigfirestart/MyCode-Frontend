@@ -15,6 +15,7 @@ import { TaskExplorerPage } from "./pages/platform/TaskExplorerPage/TaskExplorer
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import { TaskPage } from "./pages/platform/TaskPage/TaskPage";
 
 class App extends React.Component {
     state = {
@@ -75,15 +76,12 @@ class App extends React.Component {
                                     <Switch>
                                         {
                                             user?.role === STUDENT_ROLE && <>
-                                                {/** Дефолтная страница для ученика - это задания */}
-                                                <Redirect to="/tasks" />
-
                                                 <Route exact path="/tasks">
                                                     <TaskExplorerPage />
                                                 </Route>
 
                                                 <Route exact path="/tasks/:taskId">
-                                                    {/** дописать */}
+                                                    <TaskPage />
                                                 </Route>
                                             </>
                                         }
