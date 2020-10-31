@@ -22,7 +22,9 @@ export class GroupPage extends React.Component {
         group: null,
         tasks: [],
         addTaskForm: false,
+        addTaskFormValue: null,
         addStudentForm: false,
+        addStudentFormValue: null,
         availableTasks: []
     }
 
@@ -54,8 +56,7 @@ export class GroupPage extends React.Component {
     }
 
     setDropdownTasks = (groupsTask, index) => {
-        console.log(groupsTask)
-        return <Dropdown.Item eventKey="1">{groupsTask.task.name}</Dropdown.Item>
+        return <Dropdown.Item eventKey={groupsTask.task.name}>{groupsTask.task.name}</Dropdown.Item>
 
     }
 
@@ -77,6 +78,23 @@ export class GroupPage extends React.Component {
         }
     }
 
+    addNewTask = () => {
+        console.log(this.state.addTaskFormValue)
+        this.setState({
+            tasks: [
+                {
+                    name: this.state.addTaskFormValue
+                },
+                ...this.state.tasks
+            ]
+        })
+    }
+    taskSelectEvent = (event_key, ev) => {
+        this.setState({
+            addTaskFormValue: event_key
+        })
+    }
+
     openAddStudentForm = () => {
         if (!this.state.addStudentForm) {
             this.setState({addStudentForm: true})
@@ -86,6 +104,24 @@ export class GroupPage extends React.Component {
         if (this.state.addStudentForm) {
             this.setState({addStudentForm: false})
         }
+    }
+
+    addNewStudent = () => {
+        let group = this.state.group;
+        let students = group.students.reverse()
+        students.push(
+            this.state.addStudentFormValue
+        )
+        group.students = students.reverse()
+        this.setState({
+            group: group
+        })
+    }
+
+    setStudentValue = (ev) => {
+        this.setState({
+            addStudentFormValue: ev.target.value
+        })
     }
 
 
@@ -102,13 +138,14 @@ export class GroupPage extends React.Component {
                                     variant="outline-secondary"
                                     title="Выбере задачу"
                                     id="dropdown-menu-align-responsive-1"
+                                    onSelect={this.taskSelectEvent}
                                 >
                                     {
                                         this.state.availableTasks?.map(this.setDropdownTasks)
                                     }
                                 </DropdownButton>
                                 <InputGroup.Append>
-                                    <Button onClick={this.addNewGroup}>Сохранить</Button>
+                                    <Button onClick={this.addNewTask}>Сохранить</Button>
                                     <Button variant="dark" onClick={this.closeAddTaskForm}>Отмена</Button>
                                 </InputGroup.Append>
                             </InputGroup>
@@ -124,13 +161,13 @@ export class GroupPage extends React.Component {
                     {
                         this.state.addStudentForm
                             ? <InputGroup className="mt-2">
-                                <FormControl
+                                <FormControl onChange={this.setStudentValue}
                                              placeholder="ID ученика"
                                              aria-label="ID ученика"
                                              aria-describedby="basic-addon2"
                                 />
                                 <InputGroup.Append>
-                                    <Button onClick={this.addNewGroup}>Сохранить</Button>
+                                    <Button onClick={this.addNewStudent}>Сохранить</Button>
                                     <Button variant="dark" onClick={this.closeAddStudentForm}>Отмена</Button>
                                 </InputGroup.Append>
                             </InputGroup>
