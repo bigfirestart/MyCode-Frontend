@@ -95,6 +95,20 @@ export function TaskConstructorPage({ groupId, taskId }) {
         });
     };
 
+    const setTimeLimit = (timeLimit) => {
+        setTask({
+            ...task,
+            timeLimit
+        });
+    };
+
+    const setMemoryLimit = (memoryLimit) => {
+        setTask({
+            ...task,
+            memoryLimit
+        });
+    };
+
     return <div>
         <h2 className="green-under-line mt-5">Новое задание</h2>
         <Form
@@ -139,6 +153,30 @@ export function TaskConstructorPage({ groupId, taskId }) {
                     </Tab>
                 </Tabs>
             </div>
+
+            <h3>Ограничения</h3>
+            <Form>
+                <Form.Group>
+                    <Form.Label>По времени</Form.Label>
+                    <Form.Control
+                        type="number"
+                        min={0}
+                        value={task?.timeLimit}
+                        onChange={(ev) => setTimeLimit(ev.target.value)}
+                        style={{ width: "fit-content" }}
+                    />
+                </Form.Group>
+                <Form.Group>
+                    <Form.Label>По памяти</Form.Label>
+                    <Form.Control
+                        type="number"
+                        min={0}
+                        value={task?.memoryLimit}
+                        onChange={(ev) => setMemoryLimit(ev.target.value)}
+                        style={{ width: "fit-content" }}
+                    />
+                </Form.Group>
+            </Form>
 
             <h3>Тесты</h3>
             <Table bordered>
@@ -212,7 +250,7 @@ export function TaskConstructorPage({ groupId, taskId }) {
                     </tr>
                 </tbody>
             </Table>
-
+            
             <Button type="submit">Создать</Button>
         </Form>
     </div>;

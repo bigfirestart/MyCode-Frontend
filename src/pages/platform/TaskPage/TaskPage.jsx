@@ -38,28 +38,6 @@ export function TaskPage({ groupId, taskId }) {
         [groupId, taskId]
     );
 
-    /* @type {import("../../../remote/api").Task} */
-    /* const task = {
-        id: taskId,
-        problem: "### Hello world\n Task description \n\n Task description \n\n **Bye**",
-        samples: [
-            {
-                input: "3\n1 2 3",
-                output: "3 2 1"
-            },
-            {
-                input: "3\n1 2 3",
-                output: "3 2 1"
-            }
-        ],
-        deadline: new Date(),
-        timeLimit: 2,
-        memoryLimit: 1,
-        testType: "TEST",
-        postprocessorType: "EASY",
-        submissions: []
-    }; */
-
     const onUploadFile = (ev) => {
         const file = ev.target.files[0];
         if (!file) {
