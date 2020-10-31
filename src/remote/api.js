@@ -88,10 +88,9 @@ export async function postGroup(group) {
 
 //tasks
 /**
- * @param {string} groupId
  * @return {Promise<GroupTask[]>}
  */
-export async function getTasksList(groupId) {
+export async function getTasksList() {
     try {
         const response = await axiosInstance.get(`/tasks`);
         return response.data

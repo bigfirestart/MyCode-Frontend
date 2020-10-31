@@ -20,4 +20,9 @@ code {
     monospace;
 }
 
+.green-under-line{
+  border-bottom: 2px solid $primary;
+  text-decoration-color: $primary;
+}
+
 @import "~bootstrap/scss/bootstrap";
