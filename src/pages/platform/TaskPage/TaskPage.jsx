@@ -4,8 +4,10 @@ import Tab from "react-bootstrap/Tab";
 import ReactMarkdown from "react-markdown";
 import AceEditor from "react-ace";
 import Form from "react-bootstrap/Form";
-import "ace-builds/src-noconflict/mode-javascript";
 import { Button } from "react-bootstrap";
+
+import "ace-builds/src-noconflict/mode-javascript";
+import "ace-builds/src-noconflict/theme-xcode";
 
 const TASK_TAB = "task-tab";
 const SUBMISSIONS_TAB = "submissions-tab";
@@ -70,8 +72,8 @@ export function TaskPage({ groupId, taskId }) {
                 <div className="attachment-container">
                     <AceEditor
                         mode="javascript"
-                        theme="github"
                         value={sourceCode}
+                        theme="xcode"
                         onChange={setSourceCode}
                         fontSize={14}
                         setOptions={{
@@ -79,7 +81,8 @@ export function TaskPage({ groupId, taskId }) {
                             enableLiveAutocompletion: false,
                             enableSnippets: false,
                             showLineNumbers: true,
-                            tabSize: 4
+                            tabSize: 4,
+                            useWorker: false
                         }}
                         style={{
                             width: "100%"
