@@ -6,7 +6,7 @@ import { getTasksList } from "../../../remote/api"
 export class TaskExplorerPage extends React.Component {
     constructor(props) {
         super(props);
-        getTasksList().then(console.log())
+        getTasksList().then(console.log)
     }
     render() {
         return <Container fluid>

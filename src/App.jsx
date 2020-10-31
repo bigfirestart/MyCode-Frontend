@@ -15,6 +15,7 @@ import { TaskExplorerPage } from "./pages/platform/TaskExplorerPage/TaskExplorer
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import "../src/remote/mock";
 
 class App extends React.Component {
     state = {
