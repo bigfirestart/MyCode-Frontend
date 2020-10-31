@@ -82,9 +82,12 @@ class App extends React.Component {
                                                     <TaskExplorerPage />
                                                 </Route>
 
-                                                <Route exact path="/tasks/:taskId">
-                                                    <TaskPage />
-                                                </Route>
+                                                <Route exact path="/groups/:groupId/tasks/:taskId">{
+                                                    ({ match }) => <TaskPage
+                                                        taskId={match.params.taskId}
+                                                        groupId={match.params.groupId}
+                                                    />
+                                                }</Route>
                                             </>
                                         }
                                         {
