@@ -9,7 +9,7 @@ import { Footer } from "./components/Footer/Footer";
 import { Header } from "./components/Header/Header";
 import { AuthPage } from "./pages/shared/AuthPage/AuthPage";
 import { checkToken } from "./remote/auth";
-import { LOCALSTORAGE_ROLE_KEY, STUDENT_ROLE, TEACHER_ROLE } from "./constants";
+import { LOCALSTORAGE_USER_KEY, STUDENT_ROLE, TEACHER_ROLE } from "./constants";
 import { TaskConstructorPage } from "./pages/teacher/TaskConstructorPage/TaskConstructorPage";
 import { TaskExplorerPage } from "./pages/platform/TaskExplorerPage/TaskExplorerPage";
 import Container from "react-bootstrap/Container";
@@ -18,7 +18,6 @@ import Col from "react-bootstrap/Col";
 
 class App extends React.Component {
     state = {
-        role: null,
         isAuthenticated: false,
         checkingAuthentication: true,
         user: null
@@ -26,39 +25,43 @@ class App extends React.Component {
 
     componentDidMount() {
         this.checkAuthentication();
-        const role = localStorage.getItem(LOCALSTORAGE_ROLE_KEY);
-        this.setState({ role });
+        const user = localStorage.getItem(LOCALSTORAGE_USER_KEY);
+        if (user) {
+            this.setState({ user });
+        }
     }
 
     checkAuthentication = async () => {
-        const isAuthenticated = await checkToken();
+        const user = await checkToken();
         this.setState({
-            isAuthenticated,
-            checkingAuthentication: false
+            isAuthenticated: Boolean(user),
+            checkingAuthentication: false,
+            user
         });
     }
 
     onAuthenticated = async (user) => {
-        const role = localStorage.getItem(LOCALSTORAGE_ROLE_KEY);
-
         this.setState({
             isAuthenticated: true,
-            user,
-            role
+            user
         });
     }
 
     render() {
         const {
-            role,
             isAuthenticated,
-            checkingAuthentication
+            checkingAuthentication,
+            user
         } = this.state;
 
         return (
             <Router>
                 <div className="App">
-                    <Header />
+                    <Header
+                        role={user?.role}
+                        isAuthenticated={isAuthenticated}
+                        user={user}
+                    />
                     <Container>
                         <Row>
                             <Col>
@@ -71,7 +74,7 @@ class App extends React.Component {
                                     isAuthenticated &&
                                     <Switch>
                                         {
-                                            role === STUDENT_ROLE && <>
+                                            user?.role === STUDENT_ROLE && <>
                                                 {/** Дефолтная страница для ученика - это задания */}
                                                 <Redirect to="/tasks" />
 
@@ -85,7 +88,7 @@ class App extends React.Component {
                                             </>
                                         }
                                         {
-                                            role === TEACHER_ROLE && <>
+                                            user?.role === TEACHER_ROLE && <>
                                                 <Route exact path="/groups">
                                                     {/** дописать */}    
                                                 </Route>

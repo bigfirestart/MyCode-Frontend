@@ -1,7 +1,7 @@
 export const BASE_URL = "localhost:8000";
 export const LOCALSTORAGE_TOKEN_KEY = "access-token";
 export const AUTH_HEADER = "Authorization";
-export const LOCALSTORAGE_ROLE_KEY = "user-role";
+export const LOCALSTORAGE_USER_KEY = "user";
 export const STUDENT_ROLE = "STUDENT";
 export const TEACHER_ROLE = "TEACHER";
 export const ADMIN_ROLE = "ADMIN";

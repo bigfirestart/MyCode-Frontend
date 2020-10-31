@@ -40,9 +40,9 @@ export class Header extends React.Component {
                     </Nav>
                     <div>
                         <Navbar.Text>
-                            {user?.name}: {ROLES[role]}
+                            {user?.username}: {ROLES[role]}
                         </Navbar.Text>
-                        <Button variant="outline-primary">Выход</Button>
+                        <Button variant="outline-primary" className="ml-2">Выход</Button>
                     </div>
                 </Navbar.Collapse>
             }

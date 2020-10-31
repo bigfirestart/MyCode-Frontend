@@ -7,7 +7,7 @@ import Col from "react-bootstrap/Col";
 import Alert from "react-bootstrap/Alert";
 import InputGroup from "react-bootstrap/InputGroup";
 import { signIn, signUp } from "../../../remote/auth";
-import { LOCALSTORAGE_ROLE_KEY } from "../../../constants";
+import { LOCALSTORAGE_USER_KEY } from "../../../constants";
 
 /*
  * @typedef User
@@ -43,9 +43,8 @@ export function AuthPage({ onAuthenticated }) {
         if (form.checkValidity()) {
             if (tab === "sign-in") {
                 try {
-                    const data = await signIn(username, password);
-                    localStorage.setItem(LOCALSTORAGE_ROLE_KEY, data.role);
-                    onAuthenticated({ username }, data.role);
+                    const user = await signIn(username, password);
+                    onAuthenticated(user);
                 }
                 catch(err) {
                     setError(err.message);
@@ -53,7 +52,7 @@ export function AuthPage({ onAuthenticated }) {
             }
             else if (tab === "sign-up") {
                 try {
-                    await signUp({
+                    const user = {
                         username,
                         password,
                         name,
@@ -62,9 +61,10 @@ export function AuthPage({ onAuthenticated }) {
                         email,
                         dateOfBirth,
                         role
-                    });
+                    };
 
-                    onAuthenticated({ username }, role);
+                    await signUp(user);
+                    onAuthenticated(user);
                 }
                 catch(err) {
                     setError(err.message);
