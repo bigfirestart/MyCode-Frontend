@@ -1,5 +1,4 @@
 import React from "react";
-import { Button, Col, ListGroup, Row, Tabs, Tab } from "react-bootstrap";
 import {
     Dropdown,
     DropdownButton,
@@ -9,6 +8,8 @@ import {
     InputGroup,
     ListGroup,
     ListGroupItem,
+    Tabs,
+    Tab,
     Row,
     Table
 } from "react-bootstrap";
@@ -90,95 +91,56 @@ export class GroupPage extends React.Component {
 
 
     render() {
-        const { tasks } = this.state;
-        return <div>
-            <Row className="mt-5">
-                <Col className="green-under-line justify-content-end">
-                    <h2>Группа {this.state.group?.name}</h2>
-                </Col>
-            </Row>
-            <Row className="mt-4 mb-3">
-                <Col lg={11} className="align-items-center"><h4>Задачи</h4></Col>
-                {
-                    !this.state.addTaskForm &&
-                    <Col lg={1}><Button onClick={this.openAddTaskForm}>+</Button></Col>
-                }
-            </Row>
-            {
-                this.state.addTaskForm &&
-                <ListGroupItem>
-                    <Row>
-                        <InputGroup className="mb-3">
-                            <DropdownButton
-                                as={ButtonGroup}
-                                variant="outline-secondary"
-                                title="Выбере задачу"
-                                id="dropdown-menu-align-responsive-1"
-                            >
-                                {
-                                    this.state.availableTasks?.map(this.setDropdownTasks)
-                                }
-                            </DropdownButton>
-                            <InputGroup.Append>
-                                <Button onClick={this.addNewGroup}>Сохранить</Button>
-                                <Button variant="dark" onClick={this.closeAddTaskForm}>Отмена</Button>
-                            </InputGroup.Append>
-                        </InputGroup>
-                    </Row>
-                </ListGroupItem>
-            }
-            <ListGroup>
-                {
-                    this.state.tasks?.map(this.setTask)
-                }
-            </ListGroup>
-            <Row className="mt-4 mb-3">
-                <Col lg={11} className="align-items-center"><h4>Ученики</h4></Col>
-                {
-                    !this.state.addStudentForm &&
-                    <Col lg={1}><Button onClick={this.openAddStudentForm}>+</Button></Col>
-                }
-
-            </Row>
-            {
-                this.state.addStudentForm &&
-                <ListGroupItem>
-                    <Row>
-                        <InputGroup className="mb-3">
-                            <FormControl value={this.state.addGroupFormValue} onChange={this.setAddGroupFormValue}
-                                         placeholder="ID ученика"
-                                         aria-label="ID ученика"
-                                         aria-describedby="basic-addon2"
-                            />
-                            <InputGroup.Append>
-                                <Button onClick={this.addNewGroup}>Сохранить</Button>
-                                <Button variant="dark" onClick={this.closeAddStudentForm}>Отмена</Button>
-                            </InputGroup.Append>
-                        </InputGroup>
-                    </Row>
-                </ListGroupItem>
-            }
-
-            <ListGroup>
-                {
-                    this.state.group?.students.map(this.setStudent)
-                }
-            </ListGroup>
-        </div>
-
         return <div>
             <h2 className="green-under-line mt-5">Группа {this.state.group?.name}</h2>
-            <Tabs defaultActiveKey="tasks" className="mt-4">
-                <Tab title="Задачи" eventKey="tasks">
-                    <ListGroup className="mt-3">{
-                        tasks?.map(this.taskSet)
-                    }</ListGroup>                </Tab>
+            <Tabs defaultActiveKey="tasks" className="mt-4 mb-2">
+                <Tab title="Задания" eventKey="tasks">
+                    <ListGroup>
+                        {this.state.tasks?.map(this.setTask)}
+                    </ListGroup>
+                    {
+                        this.state.addTaskForm
+                            ? <InputGroup className="mt-2">
+                                <DropdownButton
+                                    as={ButtonGroup}
+                                    variant="outline-secondary"
+                                    title="Выбере задачу"
+                                    id="dropdown-menu-align-responsive-1"
+                                >
+                                    {
+                                        this.state.availableTasks?.map(this.setDropdownTasks)
+                                    }
+                                </DropdownButton>
+                                <InputGroup.Append>
+                                    <Button onClick={this.addNewGroup}>Сохранить</Button>
+                                    <Button variant="dark" onClick={this.closeAddTaskForm}>Отмена</Button>
+                                </InputGroup.Append>
+                            </InputGroup>
+                            : <Button className="mt-2" onClick={this.openAddTaskForm} variant="outline-primary">Добавить</Button>
+                    }
+                </Tab>
+
                 <Tab title="Ученики" eventKey="students">
-                    <ListGroup className="mt-3">{
-                        this.state.group?.students.map(this.studentSet)
-                    }</ListGroup>
+                    <ListGroup>
+                        {this.state.group?.students.map(this.setStudent)}
+                    </ListGroup>
+                    {
+                        this.state.addStudentForm
+                            ? <InputGroup className="mt-2">
+                                <FormControl value={this.state.addGroupFormValue} onChange={this.setAddGroupFormValue}
+                                            placeholder="ID ученика"
+                                            aria-label="ID ученика"
+                                            aria-describedby="basic-addon2"
+                                />
+                                <InputGroup.Append>
+                                    <Button onClick={this.addNewGroup}>Сохранить</Button>
+                                    <Button onClick={this.openAddTaskForm} variant="outline-primary">Добавить</Button>
+                                </InputGroup.Append>
+                            </InputGroup>
+                            : <Button className="mt-2" onClick={this.openAddStudentForm} variant="outline-primary">Добавить</Button>
+                    }
                 </Tab>
             </Tabs>
-        </div>;
+        </div>
     }
 }
