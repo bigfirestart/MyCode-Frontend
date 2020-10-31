@@ -1,4 +1,7 @@
-import {axiosInstance} from "./base"
+import { axiosInstance } from "./base"
+import axiosParseWithDates from "../utils/axiosParseWithDates";
+
+const parseWithDatesTransformer = { transformResponse: [axiosParseWithDates] };
 
 /**
  * @typedef Group
@@ -9,6 +12,7 @@ import {axiosInstance} from "./base"
  * @typedef Task
  * @property {string} id
  * @property {string} problem
+ * @property {string} name
  * @property {{ input: string, output: string }[]} samples
  * @property {Date} deadline
  * @property {number} timeLimit
@@ -101,12 +105,11 @@ export async function getTasksList() {
 
 /**
  * @param {string} groupId
- * @param {string} taskId
  * @return {Promise<Task>}
  */
 export async function getTask(groupId, taskId) {
     try {
-        const response = await axiosInstance.get(`/groups/${groupId}/tasks/${taskId}`);
+        const response = await axiosInstance.get(`/groups/${groupId}/tasks/${taskId}`, parseWithDatesTransformer);
         return response.data
     } catch (err) {
         return err;

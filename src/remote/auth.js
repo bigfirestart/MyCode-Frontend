@@ -90,7 +90,7 @@ const userMock = {
     middlename: "Петрович",
     email: "f@f.com",
     dateOfBirth: "28.04.2005",
-    role: STUDENT_ROLE,
+    role: STUDENT_ROLE
 }
 mock.onPost("/sign-in").reply(200, userMock, { [AUTH_HEADER]: "bla-bla-bla" });
 mock.onPost("/sign-up").reply(200, {}, { [AUTH_HEADER]: "bla-bla-bla" });

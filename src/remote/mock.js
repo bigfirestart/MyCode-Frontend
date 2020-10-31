@@ -3,8 +3,9 @@ import MockAdapter from "axios-mock-adapter";
 
 export const mock = new MockAdapter(axiosInstance);
 
-mock.onGet("/groups/1/tasks/2").reply(200, {
+mock.onGet("/groups/1/tasks/2").reply(200, JSON.stringify({
     id: 2,
+    name: "A+B",
     problem: "### Hello world\n Task description \n\n Task description \n\n **Byertrt**",
     samples: [
         {
@@ -24,6 +25,9 @@ mock.onGet("/groups/1/tasks/2").reply(200, {
     submissions: [
         {
             id: "1",
+            timestamp: new Date(),
+            points: 10,
+            status: "RE",
             errors: [
                 {
                     failedTest: 1,
@@ -37,15 +41,25 @@ mock.onGet("/groups/1/tasks/2").reply(200, {
         },
         {
             id: "2",
+            timestamp: new Date(),
+            points: 80,
+            status: "RE",
             errors: [
                 {
                     failedTest: 3,
                     status: "RE"
                 }
             ]
+        },
+        {
+            id: "3",
+            timestamp: new Date(),
+            points: 80,
+            status: "OK",
+            errors: []
         }
     ]
-});
+}));
 
 mock.onGet("/tasks").reply(200, [
         {

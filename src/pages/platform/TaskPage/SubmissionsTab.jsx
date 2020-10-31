@@ -14,37 +14,47 @@ export function SubmissionsTab({ submissions }) {
             submissions.map(
                 (submission, i) => <>
                     <Card>
-                        <Card.Header as={Alert} variant="danger">
+                        <Card.Header as={Alert} variant={submission.status === "OK" ? "success" : "danger"}>
                             <Accordion.Toggle as="div" eventKey={submission.id} className="w-100 submission-brief">
                                 <span style={{ border: "none" }}>
                                     {i + 1}
                                 </span>
                                 <span style={{ border: "none" }}>
-                                    Hello
+                                    {submission.timestamp.toLocaleDateString("ru")} {submission.timestamp.toLocaleTimeString("ru")}
+                                </span>
+                                <span>
+                                    {submission.status}
+                                </span>
+                                <span style={{ border: "none" }}>
+                                    {submission.points}/100
                                 </span>
                             </Accordion.Toggle>
                         </Card.Header>
-                        <Accordion.Collapse eventKey={submission.id}>
-                            <Card.Body>
-                                <Table as="th" colSpan={3}>
-                                    <thead>
-                                        <tr>
-                                            <th>Номер теста</th>
-                                            <th>Код ошибки</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>{
-                                        submission.errors.map(
-                                            (err) => <tr>
-                                                <th>{err.failedTest}</th>
-                                                <th>{err.status}</th>
+                        {
+                            submission.errors?.length > 0 &&
+                            <Accordion.Collapse eventKey={submission.id}>
+                                <Card.Body>
+                                    <Table as="th" colSpan={3} bordered>
+                                        <thead>
+                                            <tr>
+                                                <th>Номер теста</th>
+                                                <th>Код ошибки</th>
                                             </tr>
-                                        )
-                                    }</tbody>
+                                        </thead>
+                                        <tbody>{
+                                            submission.errors.map(
+                                                (err) => <tr>
+                                                    <th>{err.failedTest}</th>
+                                                    <th>{err.status}</th>
+                                                </tr>
+                                            )
+                                        }</tbody>
 
-                                </Table>
-                            </Card.Body>
-                        </Accordion.Collapse>
+                                    </Table>
+                                </Card.Body>
+                            </Accordion.Collapse>
+                        }
+
                     </Card>
                 </>
             )

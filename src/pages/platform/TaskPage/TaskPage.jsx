@@ -33,7 +33,7 @@ export function TaskPage({ groupId, taskId }) {
     }
 
     return <div>
-        <h2 className="mt-5 green-under-line mb-4">Название задачи</h2>
+        <h2 className="mt-5 green-under-line mb-4">{task.name}</h2>
         <Tabs onSelect={setTab} activeKey={tab}>
             <Tab title="Задание" eventKey={TASK_TAB}>
                 <TaskTab task={task} />

@@ -35,11 +35,13 @@ export function TaskTab({ task }) {
 
     return <>
         <h3 className="mt-4">Проблема</h3>
-        <div className="markdown-container mb-4">
-            <ReactMarkdown>
-                {task?.problem}
-            </ReactMarkdown>
-        </div>
+        <Card className="markdown-container mb-4">
+            <Card.Body>
+                <ReactMarkdown>
+                    {task?.problem}
+                </ReactMarkdown>
+            </Card.Body>
+        </Card>
         <h3 className="mt-4">Ограничения</h3>
         <div>
             <div className="limits-container">
