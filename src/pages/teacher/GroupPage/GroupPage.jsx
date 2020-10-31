@@ -22,6 +22,7 @@ export class GroupPage extends React.Component {
         )
     }
 
+
     studentSet = (studentId, index) => {
         return <ListGroup.Item>{studentId}</ListGroup.Item>
     }
