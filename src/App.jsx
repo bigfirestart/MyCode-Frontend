@@ -112,12 +112,12 @@ class App extends React.Component {
                                                     {/**  */}
                                                 </Route>
 
-                                                <Route exact path="/tasks">
-                                                    <TeacherTaskExplorerPage/>
-                                                </Route>
-
                                                 <Route exact path="/tasks/constructor">
                                                     <TaskConstructorPage/>
+                                                </Route>
+
+                                                <Route exact path="/tasks">
+                                                    <TeacherTaskExplorerPage/>
                                                 </Route>
 
                                                 <Route exact path="/tasks/:taskId">

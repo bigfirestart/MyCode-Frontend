@@ -3,6 +3,50 @@ import MockAdapter from "axios-mock-adapter";
 
 export const mock = new MockAdapter(axiosInstance);
 
+mock.onGet("/groups/1/tasks/2").reply(200, {
+    id: 2,
+    problem: "### Hello world\n Task description \n\n Task description \n\n **Byertrt**",
+    samples: [
+        {
+            input: "3\n1 2 3",
+            output: "3 2 1"
+        },
+        {
+            input: "3\n1 2 3",
+            output: "3 2 1"
+        }
+    ],
+    deadline: new Date(),
+    timeLimit: 2,
+    memoryLimit: 1,
+    testType: "TEST",
+    postprocessorType: "EASY",
+    submissions: [
+        {
+            id: "1",
+            errors: [
+                {
+                    failedTest: 1,
+                    status: "TL"
+                },
+                {
+                    failedTest: 2,
+                    status: "TL"
+                }
+            ]
+        },
+        {
+            id: "2",
+            errors: [
+                {
+                    failedTest: 3,
+                    status: "RE"
+                }
+            ]
+        }
+    ]
+});
+
 mock.onGet("/tasks").reply(200, [
         {
             groupId: "1",
@@ -55,33 +99,9 @@ mock.onGet("/groups").reply(200, [
     }]
 );
 
-
-
 mock.onGet(/\/groups\/[a-zA-Z0-9()]/).reply(200, {
         id: "group-uuid-1",
         name: "Group Mock Name",
         students: ['UUID-st-1', 'UUID-st-2', 'UUID-st-2' ]
     }
 );
-
-
-mock.onGet("/groups/1/tasks/2").reply(200, {
-    id: 2,
-    problem: "### Hello world\n Task description \n\n Task description \n\n **Byertrt**",
-    samples: [
-        {
-            input: "3\n1 2 3",
-            output: "3 2 1"
-        },
-        {
-            input: "3\n1 2 3",
-            output: "3 2 1"
-        }
-    ],
-    deadline: new Date(),
-    timeLimit: 2,
-    memoryLimit: 1,
-    testType: "TEST",
-    postprocessorType: "EASY",
-    submissions: []
-});
