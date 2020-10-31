@@ -16,32 +16,37 @@ export class Header extends React.Component {
     render() {
         const {
             role,
-            user
+            user,
+            isAuthenticated
         } = this.props;
 
         return <Navbar bg="dark" variant="dark" expand="lg">
             <Navbar.Brand>Мой|Код</Navbar.Brand>
             <Navbar.Toggle />
-            <Navbar.Collapse className="justify-content-between">
-                <Nav>
-                    {
-                        role === TEACHER_ROLE && <>
-                            <Nav.Link as={Link} to="/groups">Группы</Nav.Link>
+            {
+                isAuthenticated &&
+                <Navbar.Collapse className="justify-content-between">
+                    <Nav>
+                        {
+                            role === TEACHER_ROLE && <>
+                                <Nav.Link as={Link} to="/groups">Группы</Nav.Link>
+                                <Nav.Link as={Link} to="/tasks">Задания</Nav.Link>
+                            </>
+                        }
+                        {
+                            role === STUDENT_ROLE &&
                             <Nav.Link as={Link} to="/tasks">Задания</Nav.Link>
-                        </>
-                    }
-                    {
-                        role === STUDENT_ROLE &&
-                        <Nav.Link as={Link} to="/tasks">Задания</Nav.Link>
-                    }
-                </Nav>
-                <div>
-                    <Navbar.Text>
-                        {user?.name}: {ROLES[role]}
-                    </Navbar.Text>
-                    <Button variant="outline-primary">Выход</Button>
-                </div>
-            </Navbar.Collapse>
+                        }
+                    </Nav>
+                    <div>
+                        <Navbar.Text>
+                            {user?.name}: {ROLES[role]}
+                        </Navbar.Text>
+                        <Button variant="outline-primary">Выход</Button>
+                    </div>
+                </Navbar.Collapse>
+            }
+
       </Navbar>;
     }
 }

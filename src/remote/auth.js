@@ -2,8 +2,10 @@ import axios from "axios";
 import {
     AUTH_HEADER,
     BASE_URL,
-    LOCALSTORAGE_TOKEN_KEY
+    LOCALSTORAGE_TOKEN_KEY,
+    TEACHER_ROLE
 } from "../constants";
+import MockAdapter from "axios-mock-adapter";
 
 const axiosInst = axios.create({
     baseURL: BASE_URL
@@ -71,3 +73,9 @@ export async function checkToken() {
         return false;
     }
 }
+
+const mock = new MockAdapter(axiosInst);
+
+mock.onPost("/sign-in").reply(200, { role: TEACHER_ROLE }, { [AUTH_HEADER]: "bla-bla-bla" });
+mock.onPost("/sign-up").reply(200, {}, { [AUTH_HEADER]: "bla-bla-bla" });
+mock.onGet("/check-token").reply(400);

@@ -12,14 +12,16 @@ import { checkToken } from "./remote/auth";
 import { LOCALSTORAGE_ROLE_KEY, STUDENT_ROLE, TEACHER_ROLE } from "./constants";
 import { TaskConstructorPage } from "./pages/teacher/TaskConstructorPage/TaskConstructorPage";
 import { TaskExplorerPage } from "./pages/platform/TaskExplorerPage/TaskExplorerPage";
-
-import './App.css';
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 
 class App extends React.Component {
     state = {
         role: null,
         isAuthenticated: false,
-        checkingAuthentication: true
+        checkingAuthentication: true,
+        user: null
     }
 
     componentDidMount() {
@@ -31,8 +33,18 @@ class App extends React.Component {
     checkAuthentication = async () => {
         const isAuthenticated = await checkToken();
         this.setState({
-            isAuthenticated,
+            isAuthenticated: isAuthenticated,
             checkingAuthentication: false
+        });
+    }
+
+    onAuthenticated = async (user) => {
+        const role = localStorage.getItem(LOCALSTORAGE_ROLE_KEY);
+
+        this.setState({
+            isAuthenticated: true,
+            user,
+            role
         });
     }
 
@@ -47,58 +59,66 @@ class App extends React.Component {
             <Router>
                 <div className="App">
                     <Header />
-                    {
-                        checkingAuthentication &&
-                        <div>Проверка аутентификации</div>
-                    }
-                    {
-                        !checkingAuthentication &&
-                        isAuthenticated &&
-                        <Switch>
-                            {
-                                role === STUDENT_ROLE && <>
-                                    {/** Дефолтная страница для ученика - это задания */}
-                                    <Redirect to="/tasks" />
+                    <Container>
+                        <Row>
+                            <Col>
+                                {
+                                    checkingAuthentication &&
+                                    <div>Проверка аутентификации</div>
+                                }
+                                {
+                                    !checkingAuthentication &&
+                                    isAuthenticated &&
+                                    <Switch>
+                                        {
+                                            role === STUDENT_ROLE && <>
+                                                {/** Дефолтная страница для ученика - это задания */}
+                                                <Redirect to="/tasks" />
 
-                                    <Route exact path="/tasks">
-                                        <TaskExplorerPage />
-                                    </Route>
+                                                <Route exact path="/tasks">
+                                                    <TaskExplorerPage />
+                                                </Route>
 
-                                    <Route exact path="/tasks/:taskId">
-                                        {/** дописать */}
-                                    </Route>
-                                </>
-                            }
-                            {
-                                role === TEACHER_ROLE && <>
-                                    <Route exact path="/groups">
-                                        {/** дописать */}    
-                                    </Route>
-                                    <Route exact path="/groups/:groupId">
-                                        {/** дописать */}
-                                    </Route>
-                                    <Route exact path="/groups/:groupId/tasks">
-                                        {/**  */}
-                                    </Route>
-                                    <Route exact path="/tasks">
-                                        {/** */}
-                                    </Route>
-                                    <Route exact path="/tasks/:taskId">
+                                                <Route exact path="/tasks/:taskId">
+                                                    {/** дописать */}
+                                                </Route>
+                                            </>
+                                        }
+                                        {
+                                            role === TEACHER_ROLE && <>
+                                                <Route exact path="/groups">
+                                                    {/** дописать */}    
+                                                </Route>
+                                                <Route exact path="/groups/:groupId">
+                                                    {/** дописать */}
+                                                </Route>
+                                                <Route exact path="/groups/:groupId/tasks">
+                                                    {/**  */}
+                                                </Route>
+                                                <Route exact path="/tasks">
+                                                    {/** */}
+                                                </Route>
+                                                <Route exact path="/tasks/:taskId">
 
-                                    </Route>
-                                    <Route exact path="/tasks/constructor">
-                                        <TaskConstructorPage />
-                                    </Route>
-                                </>
-                            }
-                            <Route exact path="/" />
-                        </Switch>
-                    }
-                    {
-                        !checkingAuthentication &&
-                        !isAuthenticated &&
-                        <AuthPage />
-                    }
+                                                </Route>
+                                                <Route exact path="/tasks/constructor">
+                                                    <TaskConstructorPage />
+                                                </Route>
+                                            </>
+                                        }
+                                        <Route exact path="/" />
+                                    </Switch>
+                                }
+                                {
+                                    !checkingAuthentication &&
+                                    !isAuthenticated &&
+                                    <AuthPage
+                                        onAuthenticated={this.onAuthenticated}
+                                    />
+                                }
+                            </Col>
+                        </Row>
+                    </Container>
                     <Footer />
                 </div>
             </Router>
