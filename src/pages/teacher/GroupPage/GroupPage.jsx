@@ -8,6 +8,7 @@ export class GroupPage extends React.Component {
         group: null,
         tasks: []
     }
+
     componentDidMount() {
         getGroup(this.props.groupId).then(
             data => this.setState({
@@ -21,12 +22,17 @@ export class GroupPage extends React.Component {
         )
     }
 
-    studentSet = (studentId, index) =>{
+    studentSet = (studentId, index) => {
         return <ListGroup.Item>{studentId}</ListGroup.Item>
     }
 
-    taskSet = (task, index) =>{
-        return <ListGroup.Item>{task.name}</ListGroup.Item>
+    taskSet = (task, index) => {
+        return <ListGroup.Item>
+            <Link to={`/tasks/${task.id}`}>
+                {task.name}
+            </Link>
+
+        </ListGroup.Item>
     }
 
     render() {

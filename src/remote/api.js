@@ -101,6 +101,7 @@ export async function getTasksList() {
 
 /**
  * @param {string} groupId
+ * @param {string} taskId
  * @return {Promise<Task>}
  */
 export async function getTask(groupId, taskId) {
