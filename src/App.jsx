@@ -75,12 +75,12 @@ class App extends React.Component {
                                 {
                                     !checkingAuthentication &&
                                     isAuthenticated &&
-                                    <Switch>
+                                    <>
                                         {
-                                            user?.role === STUDENT_ROLE && [
+                                            user?.role === STUDENT_ROLE && <Switch>
                                                 <Route exact path="/tasks">
                                                     <TaskExplorerPage />
-                                                </Route>,
+                                                </Route>
 
                                                 <Route exact path="/groups/:groupId/tasks/:taskId">{
                                                     ({ match }) => <TaskPage
@@ -88,35 +88,36 @@ class App extends React.Component {
                                                         groupId={match.params.groupId}
                                                     />
                                                 }</Route>
-                                            ]
+                                            </Switch>
                                         }
                                         {
-                                            user?.role === TEACHER_ROLE && [
+                                            user?.role === TEACHER_ROLE && <Switch>
                                                 <Route exact path="/groups">
                                                     <GroupExplorerPage />
-                                                </Route>,
+                                                </Route>
 
                                                 <Route exact path="/groups/:groupId">
                                                     {/**  */}
-                                                </Route>,
+                                                </Route>
 
                                                 <Route exact path="/groups/:groupId/tasks">
                                                     {/**  */}
-                                                </Route>,
+                                                </Route>
 
                                                 <Route exact path="/tasks">
                                                     {/** */}
-                                                </Route>,
-                                                
-                                                <Route exact path="/tasks/:taskId"></Route>,
+                                                </Route>
 
                                                 <Route exact path="/tasks/constructor">
                                                     <TaskConstructorPage />
                                                 </Route>
-                                            ]
+                                                
+                                                <Route exact path="/tasks/:taskId"></Route>
+
+                                                <Route exact path="/" />
+                                            </Switch>
                                         }
-                                        <Route exact path="/" />
-                                    </Switch>
+                                    </>
                                 }
                                 {
                                     !checkingAuthentication &&
