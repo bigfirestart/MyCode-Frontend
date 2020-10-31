@@ -1,5 +1,5 @@
 import React from "react";
-import {Col, ListGroup, Row, Table} from "react-bootstrap";
+import {Button, Col, ListGroup, Row, Table} from "react-bootstrap";
 import {getGroup, getGroupTasksList} from "../../../remote/api";
 import {Link} from "react-router-dom";
 
@@ -43,16 +43,20 @@ export class GroupPage extends React.Component {
                     <h2>Группа {this.state.group?.name}</h2>
                 </Col>
             </Row>
-
-            Задачи
-            <ListGroup>
+            <Row className="mt-4">
+                <Col lg={11} className="align-items-center"><h4>Задачи</h4></Col>
+                <Col lg={1}><Button>+</Button></Col>
+            </Row>
+            <ListGroup className="mt-3">
                 {
                     this.state.tasks?.map(this.taskSet)
                 }
             </ListGroup>
-
-            Ученики
-            <ListGroup>
+            <Row className="mt-4">
+                <Col lg={11} className="align-items-center"><h4>Ученики</h4></Col>
+                <Col lg={1}><Button>+</Button></Col>
+            </Row>
+            <ListGroup className="mt-3">
                 {
                     this.state.group?.students.map(this.studentSet)
                 }
