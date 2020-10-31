@@ -1,4 +1,4 @@
-import { axiosInstance } from "./base"
+import {axiosInstance} from "./base"
 import MockAdapter from "axios-mock-adapter";
 
 export const mock = new MockAdapter(axiosInstance);
@@ -22,5 +22,21 @@ mock.onGet("/tasks").reply(200, [
                 deadline: "12-02-20"
             }
         }
-        ]
+    ]
 );
+
+mock.onGet("/groups").reply(200, [
+    {
+        id: "UUID-1",
+        name: "M3101"
+    },
+    {
+        id: "UUID-2",
+        name: "M3102"
+    },
+    {
+        id: "UUID-3",
+        name: "M3103"
+    }]
+);
+

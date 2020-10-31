@@ -17,6 +17,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { TaskPage } from "./pages/platform/TaskPage/TaskPage";
 import "../src/remote/mock";
+import { GroupExplorerPage } from "./pages/teacher/GroupExplorerPage/GroupExplorerPage";
 
 class App extends React.Component {
     state = {
@@ -89,7 +90,7 @@ class App extends React.Component {
                                         {
                                             user?.role === TEACHER_ROLE && <>
                                                 <Route exact path="/groups">
-                                                    {/** дописать */}    
+                                                    <GroupExplorerPage />
                                                 </Route>
                                                 <Route exact path="/groups/:groupId">
                                                     {/** дописать */}
