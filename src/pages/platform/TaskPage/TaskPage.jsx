@@ -39,8 +39,8 @@ export function TaskPage({ groupId, taskId }) {
             }
         ],
         deadline: new Date(),
-        timeLimit: 5000,
-        memoryLimit: 1000,
+        timeLimit: 2,
+        memoryLimit: 1,
         testType: "TEST",
         postprocessorType: "EASY",
         submissions: []
@@ -60,7 +60,7 @@ export function TaskPage({ groupId, taskId }) {
     };
 
     return <div>
-        <h2 className="mt-5">Название задачи</h2>
+        <h2 className="mt-5 green-under-line mb-4">Название задачи</h2>
         <Tabs onSelect={setTab} activeKey={tab}>
             <Tab title="Задание" eventKey={TASK_TAB}>
                 <h3 className="mt-4">Проблема</h3>
@@ -72,10 +72,10 @@ export function TaskPage({ groupId, taskId }) {
                 <h3 className="mt-4">Ограничения</h3>
                 <div>
                     <div className="limits-container">
-                        Ограничения по времени: {task.timeLimit}
+                        Ограничения по времени: {task.timeLimit} сек.
                     </div>
                     <div>
-                        Ограничения по памяти: {task.memoryLimit}
+                        Ограничения по памяти: {task.memoryLimit} МБ
                     </div>
                 </div>
                 <h3 className="mt-4">Примеры работы программы</h3>

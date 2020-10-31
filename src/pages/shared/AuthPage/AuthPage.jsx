@@ -7,7 +7,6 @@ import Col from "react-bootstrap/Col";
 import Alert from "react-bootstrap/Alert";
 import InputGroup from "react-bootstrap/InputGroup";
 import { signIn, signUp } from "../../../remote/auth";
-import { LOCALSTORAGE_USER_KEY } from "../../../constants";
 
 /*
  * @typedef User
