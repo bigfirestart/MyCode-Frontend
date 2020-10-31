@@ -4,19 +4,22 @@ import {
     Switch,
     Route
 } from "react-router-dom";
-import { Footer } from "./components/Footer/Footer";
-import { Header } from "./components/Header/Header";
-import { AuthPage } from "./pages/shared/AuthPage/AuthPage";
-import { checkToken } from "./remote/auth";
-import { LOCALSTORAGE_USER_KEY, STUDENT_ROLE, TEACHER_ROLE } from "./constants";
-import { TaskConstructorPage } from "./pages/teacher/TaskConstructorPage/TaskConstructorPage";
-import { TaskExplorerPage } from "./pages/platform/TaskExplorerPage/TaskExplorerPage";
+import {Footer} from "./components/Footer/Footer";
+import {Header} from "./components/Header/Header";
+import {AuthPage} from "./pages/shared/AuthPage/AuthPage";
+import {checkToken} from "./remote/auth";
+import {LOCALSTORAGE_USER_KEY, STUDENT_ROLE, TEACHER_ROLE} from "./constants";
+import {TaskConstructorPage} from "./pages/teacher/TaskConstructorPage/TaskConstructorPage";
+import {TaskExplorerPage} from "./pages/platform/TaskExplorerPage/TaskExplorerPage";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import { TaskPage } from "./pages/platform/TaskPage/TaskPage";
+import {TaskPage} from "./pages/platform/TaskPage/TaskPage";
 import "../src/remote/mock";
-import { GroupExplorerPage } from "./pages/teacher/GroupExplorerPage/GroupExplorerPage";
+import {GroupExplorerPage} from "./pages/teacher/GroupExplorerPage/GroupExplorerPage";
+import {TeacherTaskPage} from "./pages/teacher/TeacherTaskPage/TeacherTaskPage";
+import {TeacherTaskExplorerPage} from "./pages/teacher/TeacherTaskExplorerPage/TeacherTaskExplorerPage";
+import {GroupPage} from "./pages/teacher/GroupPage/GroupPage";
 
 class App extends React.Component {
     state = {
@@ -29,7 +32,7 @@ class App extends React.Component {
         this.checkAuthentication();
         const user = localStorage.getItem(LOCALSTORAGE_USER_KEY);
         if (user) {
-            this.setState({ user });
+            this.setState({user});
         }
     }
 
@@ -78,25 +81,31 @@ class App extends React.Component {
                                         {
                                             user?.role === STUDENT_ROLE && <Switch>
                                                 <Route exact path="/tasks">
-                                                    <TaskExplorerPage />
+                                                    <TaskExplorerPage/>
                                                 </Route>
 
-                                                <Route exact path="/groups/:groupId/tasks/:taskId">{
-                                                    ({ match }) => <TaskPage
-                                                        taskId={match.params.taskId}
-                                                        groupId={match.params.groupId}
-                                                    />
-                                                }</Route>
+                                                <Route exact path="/groups/:groupId/tasks/:taskId">
+                                                    {
+                                                        ({match}) => <TaskPage
+                                                            taskId={match.params.taskId}
+                                                            groupId={match.params.groupId}
+                                                        />
+                                                    }
+                                                </Route>
                                             </Switch>
                                         }
                                         {
                                             user?.role === TEACHER_ROLE && <Switch>
                                                 <Route exact path="/groups">
-                                                    <GroupExplorerPage />
+                                                    <GroupExplorerPage/>
                                                 </Route>
 
                                                 <Route exact path="/groups/:groupId">
-                                                    {/**  */}
+                                                    {
+                                                        ({match}) => <GroupPage
+                                                            groupId={match.params.groupId}
+                                                        />
+                                                    }
                                                 </Route>
 
                                                 <Route exact path="/groups/:groupId/tasks">
@@ -104,16 +113,22 @@ class App extends React.Component {
                                                 </Route>
 
                                                 <Route exact path="/tasks">
-                                                    {/** */}
+                                                    <TeacherTaskExplorerPage/>
                                                 </Route>
 
                                                 <Route exact path="/tasks/constructor">
-                                                    <TaskConstructorPage />
+                                                    <TaskConstructorPage/>
                                                 </Route>
-                                                
-                                                <Route exact path="/tasks/:taskId"></Route>
 
-                                                <Route exact path="/" />
+                                                <Route exact path="/tasks/:taskId">
+                                                    {
+                                                        ({match}) => <TeacherTaskPage
+                                                            taskId={match.params.taskId}
+                                                        />
+                                                    }
+                                                </Route>
+
+                                                <Route exact path="/"/>
                                             </Switch>
                                         }
                                     </>
@@ -128,7 +143,7 @@ class App extends React.Component {
                             </Col>
                         </Row>
                     </Container>
-                    <Footer />
+                    <Footer/>
                 </div>
             </Router>
         );

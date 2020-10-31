@@ -126,6 +126,19 @@ export async function getTaskTests(groupId, taskId) {
     }
 }
 
+/**
+ * @param {string} groupId
+ * @return {Promise<Task[]>}
+ */
+export async function getGroupTasksList(groupId) {
+    try {
+        const response = await axiosInstance.get(`groups/${groupId}/tasks/`);
+        return response.data
+    } catch (err) {
+        return err;
+    }
+}
+
 //submissions
 /**
  * @param {string} groupId

@@ -10,13 +10,9 @@ export default class TaskExplorerCard extends React.Component {
                     <Row>
                         <Col lg={10}>
                             <Card.Title>
-                                <Link to={`/tasks/${this.props.taskId}`}>
+                                <Link to={`/groups/${this.props.groupId}/tasks/${this.props.taskId}/`}>
                                     {this.props.taskName}
                                 </Link>
-                                {/*<Link to={`/groups/${this.props.groupId}/task/${this.props.taskId}`}>
-                                    {this.props.taskName}
-                                </Link>*/}
-
                             </Card.Title>
                             <Card.Subtitle className="mb-2 text-muted">Card Subtitle</Card.Subtitle>
                             <Card.Text>

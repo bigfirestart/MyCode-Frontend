@@ -5,7 +5,7 @@ export const mock = new MockAdapter(axiosInstance);
 
 mock.onGet("/tasks").reply(200, [
         {
-            groupId: "UUID-1",
+            groupId: "1",
             task: {
                 id: 1,
                 name: "Task 1",
@@ -14,7 +14,7 @@ mock.onGet("/tasks").reply(200, [
             }
         },
         {
-            groupId: "UUID-2",
+            groupId: "2",
             task: {
                 id: 2,
                 name: "Task 2",
@@ -24,21 +24,46 @@ mock.onGet("/tasks").reply(200, [
         }
     ]
 );
+mock.onGet(/\/groups\/([A-Za-z]|[0-9]|-)\/tasks/).reply(200, [
+    {
+        name: "Task 1"
+    },
+    {
+        name: "Task 2"
+    }
+    ]
+);
+
+mock.onGet(/\/tasks\/([A-Za-z]|[0-9])\|/ ).reply(200, {
+        name: "Task Mock Name"
+    }
+);
+
 
 mock.onGet("/groups").reply(200, [
     {
-        id: "UUID-1",
+        id: "1",
         name: "M3101"
     },
     {
-        id: "UUID-2",
+        id: "2",
         name: "M3102"
     },
     {
-        id: "UUID-3",
+        id: "3",
         name: "M3103"
     }]
 );
+
+
+
+mock.onGet(/\/groups\/[a-zA-Z0-9()]/).reply(200, {
+        id: "group-uuid-1",
+        name: "Group Mock Name",
+        students: ['UUID-st-1', 'UUID-st-2', 'UUID-st-2' ]
+    }
+);
+
 
 mock.onGet("/groups/1/tasks/2").reply(200, {
     id: 2,
