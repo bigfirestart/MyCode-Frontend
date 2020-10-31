@@ -12,7 +12,7 @@ import {
     Row,
     Table
 } from "react-bootstrap";
-import {getGroup, getGroupTasksList} from "../../../remote/api";
+import {getGroup, getGroupTasksList, getTasksList} from "../../../remote/api";
 import {Link} from "react-router-dom";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
 
@@ -21,7 +21,8 @@ export class GroupPage extends React.Component {
         group: null,
         tasks: [],
         addTaskForm: false,
-        addStudentForm: false
+        addStudentForm: false,
+        availableTasks: []
     }
 
     componentDidMount() {
@@ -38,11 +39,11 @@ export class GroupPage extends React.Component {
     }
 
 
-    studentSet = (studentId, index) => {
+    setStudent = (studentId, index) => {
         return <ListGroup.Item>{studentId}</ListGroup.Item>
     }
 
-    taskSet = (task, index) => {
+    setTask = (task, index) => {
         return <ListGroup.Item>
             <Link to={`/tasks/${task.id}`}>
                 {task.name}
@@ -51,19 +52,42 @@ export class GroupPage extends React.Component {
         </ListGroup.Item>
     }
 
+    setDropdownTasks = (groupsTask, index) => {
+        console.log(groupsTask)
+        return <Dropdown.Item eventKey="1">{groupsTask.task.name}</Dropdown.Item>
+
+    }
+
     //forms actions
     openAddTaskForm = () => {
-
+        getTasksList().then(
+            data => this.setState({
+                    availableTasks: data
+                }
+            )
+        )
+        if (!this.state.addTaskForm) {
+            this.setState({addTaskForm: true})
+        }
     }
-    hideAddTaskForm = () => {
-
+    closeAddTaskForm = () => {
+        if (this.state.addTaskForm) {
+            this.setState({addTaskForm: false})
+        }
     }
+
     openAddStudentForm = () => {
-
+        if (!this.state.addStudentForm) {
+            this.setState({addStudentForm: true})
+        }
     }
-    hideAddStudentForm = () => {
-
+    closeAddStudentForm = () => {
+        if (this.state.addStudentForm) {
+            this.setState({addStudentForm: false})
+        }
     }
+
+
 
     render() {
         const { tasks } = this.state;
@@ -77,7 +101,7 @@ export class GroupPage extends React.Component {
                 <Col lg={11} className="align-items-center"><h4>Задачи</h4></Col>
                 {
                     !this.state.addTaskForm &&
-                    <Col lg={1}><Button>+</Button></Col>
+                    <Col lg={1}><Button onClick={this.openAddTaskForm}>+</Button></Col>
                 }
             </Row>
             {
@@ -88,16 +112,16 @@ export class GroupPage extends React.Component {
                             <DropdownButton
                                 as={ButtonGroup}
                                 variant="outline-secondary"
-                                menuAlign={{lg: 'right'}}
-                                title="Left-aligned but right aligned when large screen"
+                                title="Выбере задачу"
                                 id="dropdown-menu-align-responsive-1"
                             >
-                                <Dropdown.Item eventKey="1">Action 1</Dropdown.Item>
-                                <Dropdown.Item eventKey="2">Action 2</Dropdown.Item>
+                                {
+                                    this.state.availableTasks?.map(this.setDropdownTasks)
+                                }
                             </DropdownButton>
                             <InputGroup.Append>
                                 <Button onClick={this.addNewGroup}>Сохранить</Button>
-                                <Button variant="dark" onClick={this.closeAddGroupForm}>Отмена</Button>
+                                <Button variant="dark" onClick={this.closeAddTaskForm}>Отмена</Button>
                             </InputGroup.Append>
                         </InputGroup>
                     </Row>
@@ -105,14 +129,14 @@ export class GroupPage extends React.Component {
             }
             <ListGroup>
                 {
-                    this.state.tasks?.map(this.taskSet)
+                    this.state.tasks?.map(this.setTask)
                 }
             </ListGroup>
             <Row className="mt-4 mb-3">
                 <Col lg={11} className="align-items-center"><h4>Ученики</h4></Col>
                 {
                     !this.state.addStudentForm &&
-                    <Col lg={1}><Button>+</Button></Col>
+                    <Col lg={1}><Button onClick={this.openAddStudentForm}>+</Button></Col>
                 }
 
             </Row>
@@ -122,13 +146,13 @@ export class GroupPage extends React.Component {
                     <Row>
                         <InputGroup className="mb-3">
                             <FormControl value={this.state.addGroupFormValue} onChange={this.setAddGroupFormValue}
-                                         placeholder="UUID ученика"
-                                         aria-label="UUID ученика"
+                                         placeholder="ID ученика"
+                                         aria-label="ID ученика"
                                          aria-describedby="basic-addon2"
                             />
                             <InputGroup.Append>
                                 <Button onClick={this.addNewGroup}>Сохранить</Button>
-                                <Button variant="dark" onClick={this.closeAddGroupForm}>Отмена</Button>
+                                <Button variant="dark" onClick={this.closeAddStudentForm}>Отмена</Button>
                             </InputGroup.Append>
                         </InputGroup>
                     </Row>
@@ -137,7 +161,7 @@ export class GroupPage extends React.Component {
 
             <ListGroup>
                 {
-                    this.state.group?.students.map(this.studentSet)
+                    this.state.group?.students.map(this.setStudent)
                 }
             </ListGroup>
         </div>
