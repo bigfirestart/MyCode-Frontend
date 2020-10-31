@@ -8,15 +8,17 @@ mock.onGet("/tasks").reply(200, [
             groupId: "UUID-1",
             task: {
                 id: 1,
-                problem: "Task 1",
+                name: "Task 1",
+                problem: "Task 1 problem",
                 deadline: "12-02-20"
             }
         },
         {
             groupId: "UUID-2",
             task: {
-                id: 1,
-                problem: "Task 2",
+                id: 2,
+                name: "Task 2",
+                problem: "Task 2 problem",
                 deadline: "12-02-20"
             }
         }

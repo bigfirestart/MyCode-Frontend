@@ -1,17 +1,25 @@
 import React from "react";
 import {Card, Col, Row} from "react-bootstrap";
+import {Link} from "react-router-dom";
 
-export default class TaskExplorerCard extends React.Component{
+export default class TaskExplorerCard extends React.Component {
     render() {
         return <Row className="justify-content-center mt-4">
             <Card className="w-100">
                 <Card.Body>
                     <Row>
                         <Col lg={10}>
-                            <Card.Title>{this.props.taskName }</Card.Title>
+                            <Card.Title>
+                                <Link to={`/tasks/${this.props.taskId}`}>
+                                    {this.props.taskName}
+                                </Link>
+                                {/*<Link to={`/groups/${this.props.groupId}/task/${this.props.taskId}`}>
+                                    {this.props.taskName}
+                                </Link>*/}
+
+                            </Card.Title>
                             <Card.Subtitle className="mb-2 text-muted">Card Subtitle</Card.Subtitle>
                             <Card.Text>
-
                             </Card.Text>
                         </Col>
                         <Col lg={2} className="align-self-center">
