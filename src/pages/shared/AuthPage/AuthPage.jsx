@@ -85,14 +85,14 @@ export function AuthPage({ onAuthenticated }) {
                     onSubmit={handleSubmit}
                 >
                     <Form.Group>
-                    <Form.Label>Логин</Form.Label>
-                        <Form.Control
-                            type="text"
-                            placeholder="Логин"
-                            required
-                            value={username}
-                            onChange={(ev) => setUsername(ev.target.value)}
-                    />
+                        <Form.Label>Логин</Form.Label>
+                            <Form.Control
+                                type="text"
+                                placeholder="Логин"
+                                required
+                                value={username}
+                                onChange={(ev) => setUsername(ev.target.value)}
+                        />
                     </Form.Group>
 
                     <Form.Group>

@@ -10,12 +10,10 @@ $dark:  #090E3F;
 
 body {
     margin: 0;
-    margin-bottom: 10em;
+    margin-bottom: 80vh;
 }
 
 .green-under-line{
   border-bottom: 2px solid $primary;
   text-decoration-color: $primary;
 }
-
-@import "~bootstrap/scss/bootstrap";
