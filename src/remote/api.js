@@ -20,6 +20,7 @@ const parseWithDatesTransformer = { transformResponse: [axiosParseWithDates] };
  * @property {"TEST"|"VALIDATION"} testType
  * @property {"EASY"|"HARD"} postprocessorType
  * @property {SubmissionResult[]} submissions
+ * @property {Test[]} tests 
  *
  * @typedef ShortTask
  * @property {string} id
@@ -136,7 +137,7 @@ export async function getTaskTests(groupId, taskId) {
  */
 export async function getGroupTasksList(groupId) {
     try {
-        const response = await axiosInstance.get(`groups/${groupId}/tasks/`);
+        const response = await axiosInstance.get(`groups/${groupId}/tasks`);
         return response.data
     } catch (err) {
         return err;
@@ -215,6 +216,20 @@ export async function setGroupToStudent(groupId, studentId) {
             }
         );
     } catch (err) {
+        return err;
+    }
+}
+
+/**
+ * @param {string} groupId
+ * @param {Task} task
+ */
+export async function postTask(groupId, task) {
+    try {
+        await axiosInstance.post(`/groups/${groupId}/tasks`, task);
+    }
+    catch(err) {
+        console.error(err);
         return err;
     }
 }

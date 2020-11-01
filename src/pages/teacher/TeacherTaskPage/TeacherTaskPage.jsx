@@ -1,5 +1,5 @@
 import React from "react";
-import {getTask} from "../../../remote/api";
+import { getTask } from "../../../remote/api";
 import { SubmissionsTable } from "../../../components/SubmissionsTable/SubmissionsTable";
 import Tabs from "react-bootstrap/Tabs";
 import Tab from "react-bootstrap/Tab";
@@ -10,13 +10,16 @@ export class TeacherTaskPage extends React.Component {
         task: null
     }
 
-    componentDidMount() {
-        const { taskId, groupId } = this.props;
-        getTask(groupId, taskId).then(
-            data => this.setState({
-                task: data
-            })
-        )
+    async componentDidMount() {
+        try {
+            const { taskId, groupId } = this.props;
+            const task = await getTask(groupId, taskId);
+
+            this.setState({ task });
+        }
+        catch(err) {
+            console.error(err);
+        }
     }
 
     render() {
@@ -30,12 +33,22 @@ export class TeacherTaskPage extends React.Component {
             <h2 className="green-under-line mt-5">Задача {task.name}</h2>
             <Tabs defaultActiveKey="task-constructor" className="mt-4">
                 <Tab title="Редактировать задание" eventKey="task-constructor">
-                    <TaskConstructor task={task} setTask={(t) => this.setState({ task: t })} />
+                    <TaskConstructor
+                        task={task}
+                        setTask={(t) => this.setState({ task: t })}
+                        // заглушка
+                        onSubmit={() => {}}
+                        groupId={null}
+                        setGroupId={() => {}}
+                        groups={null}
+                    />
                 </Tab>
-
-                <Tab title="Результаты" eventKey="task-submissions">
-                    <SubmissionsTable submissions={task.submissions} />
-                </Tab>
+                {
+                    task.submissions &&
+                    <Tab title="Результаты" eventKey="task-submissions">
+                        <SubmissionsTable submissions={task.submissions} />
+                    </Tab>
+                }
             </Tabs>
         </div>
     }

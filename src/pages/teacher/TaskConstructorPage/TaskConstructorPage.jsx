@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { getTaskTests, getTask } from "../../../remote/api";
+import React from "react";
+import { getGroupsList, postTask } from "../../../remote/api";
 import { TaskConstructor } from "../../../components/TaskConstructor/TaskConstructor";
 
-export function TaskConstructorPage({ groupId, taskId }) {
-    /** @type {import("../../../remote/api").Task & { tests: import("../../../remote/api").Test[] }} */
-    const initTask = taskId
-        ? null
-        : {
-            id: null,
+export class TaskConstructorPage extends React.Component {
+    constructor(props) {
+        super(props);
+
+        const initTask = {
             problem: "",
             name: "",
             tests: [{
@@ -27,32 +26,39 @@ export function TaskConstructorPage({ groupId, taskId }) {
             postprocessorType: "EASY",
             submissions: []
         };
-    
-    const [task, setTask] = useState(initTask);
+        
+        this.state = {
+            groups: null,
+            task: initTask,
+            groupId: ""
+        };
+    }
 
-    useEffect(
-        () => {
-            if (!taskId) {
-                return;
-            }
+    async componentDidMount() {
+        const groups = await getGroupsList();
+        this.setState({ groups })
+    }
 
-            const fetchTask = async () => {
-                const taskData = await getTask(groupId, taskId);
-                const tests = await getTaskTests(groupId, taskId);
+    onSubmit = async (task) => {
+        await postTask(this.state.groupId, task);
+    }
 
-                setTask({
-                    ...taskData,
-                    tests
-                });
-            };
+    setTask = (task) => this.setState({ task })
 
-            fetchTask();
-        },
-        [groupId, taskId]
-    );
+    setGroupId = (groupId) => this.setState({ groupId })
 
-    return <div>
-        <h2 className="green-under-line mt-5">Новое задание</h2>
-        <TaskConstructor task={task} setTask={setTask} />
-    </div>;
+    render() {
+        const { task, groups, groupId } = this.state
+        return <div>
+            <h2 className="green-under-line mt-5">Новое задание</h2>
+            <TaskConstructor
+                task={task}
+                groups={groups}
+                setTask={this.setTask}
+                onSubmit={this.onSubmit}
+                setGroupId={this.setGroupId}
+                groupId={groupId}
+            />
+        </div>;
+    }
 }

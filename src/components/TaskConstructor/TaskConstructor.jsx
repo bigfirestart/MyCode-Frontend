@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
@@ -7,12 +7,18 @@ import Card from "react-bootstrap/Card";
 import Tab from "react-bootstrap/Tab";
 import ReactMarkdown from "react-markdown";
 
-export function TaskConstructor({ task, setTask }) {
+export function TaskConstructor({ task, setTask, groups, onSubmit, setGroupId, groupId }) {
     const [validated, setValidated] = useState(false);
 
     const handleSubmit = async (ev) => {
         ev.preventDefault();
         ev.stopPropagation();
+
+        if (ev.currentTarget.checkValidity()) {
+            onSubmit(task);
+            return;
+        }
+
         setValidated(true);
     };
 
@@ -70,6 +76,24 @@ export function TaskConstructor({ task, setTask }) {
         });
     };
 
+    const setSample = (newSample, i) => {
+        setTask({
+            ...task,
+            samples: task.samples.map((sample, j) => i === j ? newSample : sample)
+        })
+    }
+
+    const addSample = () => setTask({
+        ...task,
+        samples: [
+            ...task.samples,
+            {
+                input: "",
+                output: ""
+            }
+        ]
+    });
+
     return <Form
         className="mt-4"
         noValidate 
@@ -117,28 +141,26 @@ export function TaskConstructor({ task, setTask }) {
         </Tabs>
 
         <h3 className="mt-4">Ограничения</h3>
-        <Form>
-            <Form.Group>
-                <Form.Label>По времени</Form.Label>
-                <Form.Control
-                    type="number"
-                    min={0}
-                    value={task?.timeLimit}
-                    onChange={(ev) => setTimeLimit(ev.target.value)}
-                    style={{ width: "fit-content" }}
-                />
-            </Form.Group>
-            <Form.Group>
-                <Form.Label>По памяти</Form.Label>
-                <Form.Control
-                    type="number"
-                    min={0}
-                    value={task?.memoryLimit}
-                    onChange={(ev) => setMemoryLimit(ev.target.value)}
-                    style={{ width: "fit-content" }}
-                />
-            </Form.Group>
-        </Form>
+        <Form.Group>
+            <Form.Label>По времени</Form.Label>
+            <Form.Control
+                type="number"
+                min={0}
+                value={task?.timeLimit}
+                onChange={(ev) => setTimeLimit(ev.target.value)}
+                style={{ width: "fit-content" }}
+            />
+        </Form.Group>
+        <Form.Group>
+            <Form.Label>По памяти</Form.Label>
+            <Form.Control
+                type="number"
+                min={0}
+                value={task?.memoryLimit}
+                onChange={(ev) => setMemoryLimit(ev.target.value)}
+                style={{ width: "fit-content" }}
+            />
+        </Form.Group>
 
         <h3 className="mt-4">Тесты</h3>
         <Table>
@@ -153,15 +175,15 @@ export function TaskConstructor({ task, setTask }) {
             <tbody>
                 {
                     task.tests.map(
-                        (sample, i) => <Form as="tr">
-                            <th style={{ verticalAlign: "middle" }}>{sample.number}</th>
+                        (test, i) => <tr>
+                            <th style={{ verticalAlign: "middle" }}>{test.number}</th>
                             <Form.Group as="th">
                                 <Form.Control
                                     as="textarea"
-                                    value={sample.input}
+                                    value={test.input}
                                     onChange={
                                         (ev) => setTest({
-                                            ...sample,
+                                            ...test,
                                             input: ev.target.value
                                         }, i)
                                     }
@@ -171,10 +193,10 @@ export function TaskConstructor({ task, setTask }) {
                             <Form.Group as="th">
                                 <Form.Control
                                     as="textarea"
-                                    value={sample.output}
+                                    value={test.output}
                                     onChange={
                                         (ev) => setTest({
-                                            ...sample,
+                                            ...test,
                                             output: ev.target.value
                                         }, i)
                                     }
@@ -189,16 +211,16 @@ export function TaskConstructor({ task, setTask }) {
                                     type="number"
                                     min={0}
                                     max={100}
-                                    value={sample.weight}
+                                    value={test.weight}
                                     onChange={
                                         (ev) => setTest({
-                                            ...sample,
+                                            ...test,
                                             weight: ev.target.value
                                         }, i)
                                     }
                                 />
                             </Form.Group>
-                        </Form>
+                        </tr>
                     )    
                 }
                 <tr>
@@ -212,7 +234,82 @@ export function TaskConstructor({ task, setTask }) {
                 </tr>
             </tbody>
         </Table>
+
+        <h3 className="mt-4">Сэмплы</h3>
+        <p>Примеры входных и выходных данных, которые будут видеть ученики</p>
+        <Table>
+            <thead>
+                <tr>
+                    <th>Номер</th>
+                    <th>Вход</th>
+                    <th>Выход</th>
+                </tr>
+            </thead>
+            <tbody>
+                {
+                    task.samples.map(
+                        (sample, i) => <tr>
+                            <th style={{ verticalAlign: "middle" }}>{i + 1}</th>
+                            <Form.Group as="th">
+                                <Form.Control
+                                    as="textarea"
+                                    value={sample.input}
+                                    onChange={
+                                        (ev) => setSample({
+                                            ...sample,
+                                            input: ev.target.value
+                                        }, i)
+                                    }
+                                    style={{ height: "6em" }}
+                                />
+                            </Form.Group>
+                            <Form.Group as="th">
+                                <Form.Control
+                                    as="textarea"
+                                    value={sample.output}
+                                    onChange={
+                                        (ev) => setSample({
+                                            ...sample,
+                                            output: ev.target.value
+                                        }, i)
+                                    }
+                                    style={{ height: "6em" }}
+                                />
+                            </Form.Group>
+                        </tr>
+                    )
+                }
+                <tr>
+                    <th>{task.samples.length + 1}</th>
+                    <th colSpan={3}>
+                        <Button
+                            variant="outline-primary"
+                            onClick={addSample}
+                        >Добавить</Button>
+                    </th>
+                </tr>
+            </tbody>
+        </Table>
         
+        {
+            groups && <>
+                <h3 className="mt-4">Назначение</h3>
+                <Form.Group>
+                    <Form.Label>Учебная группа</Form.Label>
+                    <Form.Control as="select" onChange={(ev) => setGroupId(ev.target.value)} value={groupId}>
+                        {
+                            groups.map(
+                                ({ id, name }) => <option value={id}>
+                                    {id}
+                                </option>
+                            )
+                        }
+                        <option />
+                    </Form.Control>
+                </Form.Group>
+            </>
+        }
+
         <Button type="submit">Создать</Button>
     </Form>;
 }
