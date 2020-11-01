@@ -54,11 +54,14 @@ export class GroupExplorerPage extends React.Component {
         });
 
         const newGroup = { name: this.state.addGroupFormValue };
-        await postGroup(newGroup);
+        const { id } = await postGroup(newGroup);
 
         this.setState({
             groups: [
-                newGroup,
+                {
+                    ...newGroup,
+                    id
+                },
                 ...this.state.groups,
             ],
             addGroupForm: false,

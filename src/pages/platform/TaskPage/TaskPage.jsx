@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Tabs from "react-bootstrap/Tabs";
 import Tab from "react-bootstrap/Tab";
-import { getTask, postSubmission } from "../../../remote/api";
+import { getTask, getTaskSubmissions, postSubmission } from "../../../remote/api";
 import { TaskTab } from "./TaskTab";
 import { SubmissionsTab } from "./SubmissionsTab";
 import { Link } from "react-router-dom";
@@ -17,7 +17,11 @@ export function TaskPage({ groupId, taskId }) {
         () => {
             const fetchTasks = async () => {
                 const task = await getTask(groupId, taskId);
-                setTask(task);
+                const submissions = await getTaskSubmissions(groupId, taskId);
+                setTask({
+                    ...task,
+                    submissions
+                });
             };
 
             fetchTasks();

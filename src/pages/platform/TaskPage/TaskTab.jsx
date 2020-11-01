@@ -14,15 +14,15 @@ import "ace-builds/src-noconflict/mode-java";
 import "ace-builds/src-noconflict/theme-xcode";
 
 const editorLanguage = {
-    "c": "c_cpp",
     "cpp": "c_cpp",
-    "java": "java"
+    "pascal": "pascal",
+    "haskell": "haskell"
 };
 
 const apiLanguage = {
-    "c": "C",
     "cpp": "CPP",
-    "java": "JAVA"
+    "pascal": "PASCAL",
+    "haskell": "HASKELL"
 };
 
 export function TaskTab({ task, onSubmit }) {
@@ -101,8 +101,8 @@ export function TaskTab({ task, onSubmit }) {
                     <Form.Label>Выберите язык</Form.Label>
                     <Form.Control as="select" value={language} onChange={(ev) => setLanguage(ev.target.value)}>
                         <option value="cpp">C++</option>
-                        <option value="c">C</option>
-                        <option value="java">Java</option>
+                        <option value="pascal">Pascal</option>
+                        <option value="haskell">Haskell</option>
                         <option style={{ display: "none" }} value="" />
                     </Form.Control>
                 </Form.Group>

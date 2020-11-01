@@ -84,7 +84,8 @@ export async function getGroup(groupId) {
  */
 export async function postGroup(group) {
     try {
-        await axiosInstance.post(`/groups`, group);
+        const response = await axiosInstance.post(`/groups`, group);
+        return response.data;
     } catch (err) {
         console.error(err);
         return err;
@@ -152,7 +153,7 @@ export async function getGroupTasksList(groupId) {
  */
 export async function getTaskSubmissions(groupId, taskId) {
     try {
-        const response = await axiosInstance.get(`/groups/${groupId}/tasks/${taskId}/submissions`);
+        const response = await axiosInstance.get(`/tasks/${taskId}/submissions`);
         return response.data
     } catch (err) {
         return err;
@@ -226,7 +227,7 @@ export async function getStudent(groupId, studentId) {
  */
 export async function addStudentToGroup(groupId, studentId) {
     try {
-        await axiosInstance.post(`/groups/${groupId}/students`, null, { params: { id: studentId } });
+        await axiosInstance.post(`/groups/${groupId}/students`, null, { params: { student_id: studentId } });
     } catch (err) {
         return err;
     }
