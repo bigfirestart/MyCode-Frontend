@@ -300,7 +300,7 @@ export function TaskConstructor({ task, setTask, groups, onSubmit, setGroupId, g
                         {
                             groups.map(
                                 ({ id, name }) => <option value={id}>
-                                    {id}
+                                    {name}
                                 </option>
                             )
                         }

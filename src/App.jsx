@@ -2,7 +2,7 @@ import React from "react";
 import {
     BrowserRouter as Router,
     Switch,
-    Route
+    Route, Redirect
 } from "react-router-dom";
 import {Footer} from "./components/Footer/Footer";
 import {Header} from "./components/Header/Header";
@@ -92,6 +92,10 @@ class App extends React.Component {
                                                         />
                                                     }
                                                 </Route>
+
+                                                <Route exact path="*">
+                                                    <Redirect to="/tasks" />
+                                                </Route>
                                             </Switch>
                                         }
                                         {
@@ -129,7 +133,9 @@ class App extends React.Component {
                                                     }
                                                 </Route>
 
-                                                <Route exact path="/"/>
+                                                <Route exact path="*">
+                                                    <Redirect to="/groups" />
+                                                </Route>
                                             </Switch>
                                         }
                                     </>

@@ -1,21 +1,16 @@
 import React from "react";
 import {
     Dropdown,
-    DropdownButton,
     Button,
-    Col,
     FormControl,
     InputGroup,
     ListGroup,
-    ListGroupItem,
     Tabs,
-    Tab,
-    Row,
-    Table
+    Tab
 } from "react-bootstrap";
-import {getGroup, getGroupTasksList, getTasksList} from "../../../remote/api";
+import {addStudentToGroup, getGroup, getGroupTasksList, getTasksList} from "../../../remote/api";
 import {Link} from "react-router-dom";
-import ButtonGroup from "react-bootstrap/ButtonGroup";
+import { LinkContainer } from "react-router-bootstrap";
 
 export class GroupPage extends React.Component {
     state = {
@@ -51,6 +46,7 @@ export class GroupPage extends React.Component {
             <Link to={`/groups/${this.props.groupId}/tasks/${task.id}`}>
                 {task.name}
             </Link>
+
         </ListGroup.Item>
     }
 
@@ -105,16 +101,19 @@ export class GroupPage extends React.Component {
         }
     }
 
-    addNewStudent = () => {
-        let group = this.state.group;
-        let students = group.students.reverse()
-        students.push(
-            this.state.addStudentFormValue
-        )
-        group.students = students.reverse()
+    addNewStudent = async () => {
+        const { groupId } = this.props;
+        const { addStudentFormValue: studentId, group } = this.state;
+
+        let students = group.students.reverse();
+        students.push(studentId);
+        group.students = students.reverse();
+
+        await addStudentToGroup(groupId, studentId);
+
         this.setState({
             group: group
-        })
+        });
     }
 
     setStudentValue = (ev) => {
@@ -129,7 +128,16 @@ export class GroupPage extends React.Component {
             <h2 className="green-under-line mt-5">Группа {this.state.group?.name}</h2>
             <Tabs defaultActiveKey="tasks" className="mt-4 mb-2">
                 <Tab title="Задания" eventKey="tasks">
-                    {
+                    <LinkContainer to="/tasks/constructor">
+                        <Button
+                            className="mt-2"
+                            onClick={this.openAddTaskForm}
+                            variant="outline-primary"
+                        >
+                            Добавить
+                        </Button>  
+                    </LinkContainer>
+                    {/*
                         this.state.addTaskForm
                             ? <InputGroup className="mt-2">
                                 <DropdownButton
@@ -150,7 +158,7 @@ export class GroupPage extends React.Component {
                             </InputGroup>
                             : <Button className="mt-2" onClick={this.openAddTaskForm}
                                       variant="outline-primary">Добавить</Button>
-                    }
+                    */}
                     <ListGroup className={"mt-2"}>
                         {this.state.tasks?.map(this.setTask)}
                     </ListGroup>

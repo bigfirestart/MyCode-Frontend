@@ -207,14 +207,9 @@ export async function getStudent(groupId, studentId) {
  * @param {string} groupId
  * @param {string} studentId
  */
-export async function setGroupToStudent(groupId, studentId) {
+export async function addStudentToGroup(groupId, studentId) {
     try {
-        await axiosInstance.post(`/groups/${groupId}/students`, {
-                params: {
-                    id: studentId
-                }
-            }
-        );
+        await axiosInstance.post(`/groups/${groupId}/students`, null, { params: { student_id: studentId } });
     } catch (err) {
         return err;
     }

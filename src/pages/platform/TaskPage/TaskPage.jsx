@@ -4,6 +4,7 @@ import Tab from "react-bootstrap/Tab";
 import { getTask } from "../../../remote/api";
 import { TaskTab } from "./TaskTab";
 import { SubmissionsTab } from "./SubmissionsTab";
+import { Link } from "react-router-dom";
 
 const TASK_TAB = "task-tab";
 const SUBMISSIONS_TAB = "submissions-tab";
@@ -24,17 +25,14 @@ export function TaskPage({ groupId, taskId }) {
         [groupId, taskId]
     );
 
-    
-
     if (!task) {
-        return <div>
-            Загрузка
-        </div>;
+        return null;
     }
 
     return <div>
-        <h2 className="mt-5 green-under-line mb-4">{task.name}</h2>
-        <Tabs onSelect={setTab} activeKey={tab}>
+        <h2 className="green-under-line mt-5 mb-2">{task.name}</h2>
+        <Link to="/tasks">🠔 К задачам</Link>
+        <Tabs onSelect={setTab} activeKey={tab} className="mt-4">
             <Tab title="Задание" eventKey={TASK_TAB}>
                 <TaskTab task={task} />
             </Tab>

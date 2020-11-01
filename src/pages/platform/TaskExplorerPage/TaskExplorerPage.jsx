@@ -1,7 +1,7 @@
 import React from "react";
-import {Card, Col, Container, Row} from "react-bootstrap";
-import TaskExplorerCard from "./TaskExplorerCard";
-import {getTasksList} from "../../../remote/api"
+import { ListGroup } from "react-bootstrap";
+import { getTasksList } from "../../../remote/api";
+import { Link } from "react-router-dom";
 
 export class TaskExplorerPage extends React.Component {
     state = {
@@ -14,26 +14,24 @@ export class TaskExplorerPage extends React.Component {
         )
     }
 
-
-    taskSet = (groupTask, i) => {
-        return <TaskExplorerCard
-            groupId={groupTask.groupId}
-            taskId={groupTask.task.id}
-            taskName={groupTask.task.name}
-        />
-    }
-
-
     render() {
-        return <Container fluid>
-            <Row className="mt-5">
-                <Col lg={3} className="green-under-line justify-content-end">
-                    <h2>Задачи</h2>
-                </Col>
-            </Row>
+        const { groupTasks } = this.state;
+
+        return <div>
+            <h2 className="green-under-line mt-5">Задачи</h2>
+            <ListGroup className="mt-4">
             {
-                this.state.groupTasks.map(this.taskSet)
+                groupTasks.map(
+                    (groupTask) => <ListGroup.Item
+                        as={Link}
+                        to={`/groups/${groupTask.group[0]}/tasks/${groupTask.task.id}`}
+                        action
+                    >
+                        {groupTask.task.name}
+                    </ListGroup.Item>
+                )
             }
-        </Container>
+            </ListGroup>
+        </div>
     }
 }
