@@ -16,7 +16,7 @@ export function SubmissionsTable({ submissions }) {
                                 {i + 1}
                             </span>
                             <span style={{ border: "none" }}>
-                                {submission.timestamp.toLocaleDateString("ru")} {submission.timestamp.toLocaleTimeString("ru")}
+                                {new Date().toLocaleDateString("ru")} {new Date().toLocaleTimeString("ru")}
                             </span>
                             <span>
                                 {submission.status}
