@@ -174,6 +174,23 @@ export async function getTaskSubmissionCode(groupId, taskId, submissionId) {
     }
 }
 
+export async function postSubmission(groupId, taskId, language, sourceCode) {
+    try {
+        const response = await axiosInstance.post(
+            `/tasks/${taskId}/submissions`,
+            {
+                code: sourceCode,
+                language
+            }
+        );
+    }
+    catch(err) {
+        console.error(err);
+        return err;
+    }
+}
+
+
 
 //students
 /**
@@ -209,7 +226,7 @@ export async function getStudent(groupId, studentId) {
  */
 export async function addStudentToGroup(groupId, studentId) {
     try {
-        await axiosInstance.post(`/groups/${groupId}/students`, null, { params: { student_id: studentId } });
+        await axiosInstance.post(`/groups/${groupId}/students`, null, { params: { id: studentId } });
     } catch (err) {
         return err;
     }
@@ -228,3 +245,15 @@ export async function postTask(groupId, task) {
         return err;
     }
 }
+
+export async function getUserByLogin(username) {
+    try {
+        const { data } = await axiosInstance.get(`/users/${username}`);
+        return data;
+    }
+    catch(err) {
+        console.error(err);
+        return err;
+    }
+}
+

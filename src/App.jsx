@@ -112,10 +112,6 @@ class App extends React.Component {
                                                     }
                                                 </Route>
 
-                                                <Route exact path="/groups/:groupId/tasks">
-                                                    {/**  */}
-                                                </Route>
-
                                                 <Route exact path="/tasks/constructor">
                                                     <TaskConstructorPage/>
                                                 </Route>

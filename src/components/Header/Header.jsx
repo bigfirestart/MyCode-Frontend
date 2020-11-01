@@ -13,6 +13,7 @@ export class Header extends React.Component {
         },
         role: STUDENT_ROLE
     }
+
     logout = () => {
         localStorage.removeItem("user-role")
         localStorage.removeItem("access-token")
@@ -40,7 +41,8 @@ export class Header extends React.Component {
                         {
                             role === TEACHER_ROLE && <>
                                 <Nav.Link as={Link} to="/groups">Группы</Nav.Link>
-                                <Nav.Link as={Link} to="/tasks">Задания</Nav.Link>
+                                <Nav.Link as={Link} to="/tasks">Задачи</Nav.Link>
+                                <Nav.Link as={Link} to="/tasks/constructor">Создать задачу</Nav.Link>
                             </>
                         }
                         {

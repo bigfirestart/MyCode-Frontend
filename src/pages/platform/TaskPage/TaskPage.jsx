@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Tabs from "react-bootstrap/Tabs";
 import Tab from "react-bootstrap/Tab";
-import { getTask } from "../../../remote/api";
+import { getTask, postSubmission } from "../../../remote/api";
 import { TaskTab } from "./TaskTab";
 import { SubmissionsTab } from "./SubmissionsTab";
 import { Link } from "react-router-dom";
@@ -25,6 +25,11 @@ export function TaskPage({ groupId, taskId }) {
         [groupId, taskId]
     );
 
+    const onSubmit = async (language, sourceCode) => {
+        await postSubmission(groupId, taskId, language, sourceCode);
+        setTab(SUBMISSIONS_TAB);
+    };
+
     if (!task) {
         return null;
     }
@@ -34,7 +39,7 @@ export function TaskPage({ groupId, taskId }) {
         <Link to="/tasks">🠔 К задачам</Link>
         <Tabs onSelect={setTab} activeKey={tab} className="mt-4">
             <Tab title="Задание" eventKey={TASK_TAB}>
-                <TaskTab task={task} />
+                <TaskTab task={task} onSubmit={onSubmit} />
             </Tab>
             <Tab title="Попытки" eventKey={SUBMISSIONS_TAB}>
                 <SubmissionsTab submissions={task.submissions} />

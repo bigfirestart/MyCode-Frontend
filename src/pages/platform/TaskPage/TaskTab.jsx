@@ -5,8 +5,7 @@ import Form from "react-bootstrap/Form";
 import Accordion from "react-bootstrap/Accordion";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
+import Table from "react-bootstrap/Table";
 import Col from "react-bootstrap/Col";
 
 import "ace-builds/src-noconflict/mode-c_cpp";
@@ -14,7 +13,19 @@ import "ace-builds/src-noconflict/mode-python";
 import "ace-builds/src-noconflict/mode-java";
 import "ace-builds/src-noconflict/theme-xcode";
 
-export function TaskTab({ task }) {
+const editorLanguage = {
+    "c": "c_cpp",
+    "cpp": "c_cpp",
+    "java": "java"
+};
+
+const apiLanguage = {
+    "c": "C",
+    "cpp": "CPP",
+    "java": "JAVA"
+};
+
+export function TaskTab({ task, onSubmit }) {
     const [sourceCode, setSourceCode] = useState("");
     const [language, setLanguage] = useState("");
 
@@ -31,7 +42,7 @@ export function TaskTab({ task }) {
         reader.readAsText(file);
     };
 
-    console.log(task);
+    const onClickSubmit = () => onSubmit(apiLanguage[language], sourceCode);
 
     return <>
         <h3 className="mt-4">Проблема</h3>
@@ -52,22 +63,30 @@ export function TaskTab({ task }) {
             </div>
         </div>
         <h3 className="mt-4">Примеры работы программы</h3>
-        <Container className="samples-container">{
-            task.samples.map(
-                (sample, i) => <>
-                    <Row className="mb-3">
-                        <Col md="3">
-                            <div>Вход</div>
-                            <div style={{ whiteSpace: "pre" }}>{sample.input}</div>
-                        </Col>
-                        <Col md="3">
-                            <div>Выход</div>
-                            <div style={{ whiteSpace: "pre" }}>{sample.output}</div>
-                        </Col>
-                    </Row>
-                </>
-            )
-        }</Container>
+        <Table className="samples-container" bordered>
+            <thead>
+                <tr>
+                    <th>Ввод</th>
+                    <th>Вывод</th>
+                </tr>
+            </thead>
+            <tbody>
+            {
+                task.samples.map(
+                    (sample, i) => <>
+                        <tr className="mb-3">
+                            <td>
+                                <div style={{ whiteSpace: "pre" }}>{sample.input}</div>
+                            </td>
+                            <td>
+                                <div style={{ whiteSpace: "pre" }}>{sample.output}</div>
+                            </td>
+                        </tr>
+                    </>
+                )
+            }
+            </tbody>
+        </Table>
         <h3 className="mt-4">Отправка решения</h3>
         <Form className="mt-2">
             <Form.Row>
@@ -81,9 +100,9 @@ export function TaskTab({ task }) {
                 <Form.Group as={Col}>
                     <Form.Label>Выберите язык</Form.Label>
                     <Form.Control as="select" value={language} onChange={(ev) => setLanguage(ev.target.value)}>
-                        <option value="c_cpp">C/C++</option>
+                        <option value="cpp">C++</option>
+                        <option value="c">C</option>
                         <option value="java">Java</option>
-                        <option value="python">Python</option>
                         <option style={{ display: "none" }} value="" />
                     </Form.Control>
                 </Form.Group>
@@ -98,7 +117,7 @@ export function TaskTab({ task }) {
                 </Card.Header>
                 <Accordion.Collapse eventKey="source-code">
                     <AceEditor
-                        mode={language}
+                        mode={editorLanguage[language]}
                         value={sourceCode}
                         theme="xcode"
                         onChange={setSourceCode}
@@ -121,6 +140,7 @@ export function TaskTab({ task }) {
         <Button 
             type="submit"
             className="mt-4"
+            onClick={onClickSubmit}
         >
             Отправить
         </Button>

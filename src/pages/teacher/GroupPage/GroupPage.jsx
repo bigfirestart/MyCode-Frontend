@@ -8,7 +8,7 @@ import {
     Tabs,
     Tab
 } from "react-bootstrap";
-import {addStudentToGroup, getGroup, getGroupTasksList, getTasksList} from "../../../remote/api";
+import {addStudentToGroup, getGroup, getGroupTasksList, getTasksList, getUserByLogin} from "../../../remote/api";
 import {Link} from "react-router-dom";
 import { LinkContainer } from "react-router-bootstrap";
 
@@ -103,13 +103,14 @@ export class GroupPage extends React.Component {
 
     addNewStudent = async () => {
         const { groupId } = this.props;
-        const { addStudentFormValue: studentId, group } = this.state;
+        const { addStudentFormValue: username, group } = this.state;
 
         let students = group.students.reverse();
-        students.push(studentId);
+        students.push(username);
         group.students = students.reverse();
 
-        await addStudentToGroup(groupId, studentId);
+        const user = await getUserByLogin(username);
+        await addStudentToGroup(groupId, user.id);
 
         this.setState({
             group: group
@@ -131,7 +132,7 @@ export class GroupPage extends React.Component {
                     <LinkContainer to="/tasks/constructor">
                         <Button
                             className="mt-2"
-                            onClick={this.openAddTaskForm}
+                            // onClick={this.openAddTaskForm}
                             variant="outline-primary"
                         >
                             Добавить

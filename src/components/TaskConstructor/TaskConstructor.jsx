@@ -9,6 +9,7 @@ import ReactMarkdown from "react-markdown";
 
 export function TaskConstructor({ task, setTask, groups, onSubmit, setGroupId, groupId }) {
     const [validated, setValidated] = useState(false);
+    const [submitting, setSubmitting] = useState(false);
 
     const handleSubmit = async (ev) => {
         ev.preventDefault();
@@ -176,8 +177,8 @@ export function TaskConstructor({ task, setTask, groups, onSubmit, setGroupId, g
                 {
                     task.tests.map(
                         (test, i) => <tr>
-                            <th style={{ verticalAlign: "middle" }}>{test.number}</th>
-                            <Form.Group as="th">
+                            <td>{test.number}</td>
+                            <Form.Group as="td">
                                 <Form.Control
                                     as="textarea"
                                     value={test.input}
@@ -190,7 +191,7 @@ export function TaskConstructor({ task, setTask, groups, onSubmit, setGroupId, g
                                     style={{ height: "6em" }}
                                 />
                             </Form.Group>
-                            <Form.Group as="th">
+                            <Form.Group as="td">
                                 <Form.Control
                                     as="textarea"
                                     value={test.output}
@@ -204,7 +205,7 @@ export function TaskConstructor({ task, setTask, groups, onSubmit, setGroupId, g
                                 />
                             </Form.Group>
                             <Form.Group 
-                                as="th"
+                                as="td"
                                 style={{ verticalAlign: "middle" }}
                             >
                                 <Form.Control
@@ -224,13 +225,13 @@ export function TaskConstructor({ task, setTask, groups, onSubmit, setGroupId, g
                     )    
                 }
                 <tr>
-                    <th>{task.tests.length + 1}</th>
-                    <th colSpan={3}>
+                    <td>{task.tests.length + 1}</td>
+                    <td colSpan={3}>
                         <Button
                             variant="outline-primary"
                             onClick={addTest}
                         >Добавить</Button>
-                    </th>
+                    </td>
                 </tr>
             </tbody>
         </Table>
@@ -249,8 +250,8 @@ export function TaskConstructor({ task, setTask, groups, onSubmit, setGroupId, g
                 {
                     task.samples.map(
                         (sample, i) => <tr>
-                            <th style={{ verticalAlign: "middle" }}>{i + 1}</th>
-                            <Form.Group as="th">
+                            <td>{i + 1}</td>
+                            <Form.Group as="td">
                                 <Form.Control
                                     as="textarea"
                                     value={sample.input}
@@ -263,7 +264,7 @@ export function TaskConstructor({ task, setTask, groups, onSubmit, setGroupId, g
                                     style={{ height: "6em" }}
                                 />
                             </Form.Group>
-                            <Form.Group as="th">
+                            <Form.Group as="td">
                                 <Form.Control
                                     as="textarea"
                                     value={sample.output}
@@ -280,13 +281,13 @@ export function TaskConstructor({ task, setTask, groups, onSubmit, setGroupId, g
                     )
                 }
                 <tr>
-                    <th>{task.samples.length + 1}</th>
-                    <th colSpan={3}>
+                    <td>{task.samples.length + 1}</td>
+                    <td colSpan={3}>
                         <Button
                             variant="outline-primary"
                             onClick={addSample}
                         >Добавить</Button>
-                    </th>
+                    </td>
                 </tr>
             </tbody>
         </Table>
