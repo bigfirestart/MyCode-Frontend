@@ -10,7 +10,13 @@ export function SubmissionsTable({ submissions }) {
         submissions.map(
             (submission, i) => <>
                 <Card>
-                    <Card.Header as={Alert} variant={submission.status === "OK" ? "success" : "danger"}>
+                    <Card.Header as={Alert} variant={
+                            submission.status === "OK"
+                                ? "success"
+                                    : submission.status === "IN_PROCESS"
+                                        ? "info"
+                                        : "danger"
+                            }>
                         <Accordion.Toggle as="div" eventKey={submission.id} className="w-100 submission-brief">
                             <span style={{ border: "none" }}>
                                 {i + 1}
