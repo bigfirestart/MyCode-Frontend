@@ -22,7 +22,7 @@ export class TaskConstructorPage extends React.Component {
             deadline: new Date(),
             timeLimit: 1000,
             memoryLimit: 1000,
-            testType: "TEST",
+            checkType: "TEST",
             postprocessorType: "EASY",
             submissions: []
         };

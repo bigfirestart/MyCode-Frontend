@@ -89,9 +89,7 @@ export class GroupExplorerPage extends React.Component {
                                 <Button variant="dark" onClick={this.closeAddGroupForm}>Отмена</Button>
                             </InputGroup.Append>
                         </InputGroup>
-                    : <div className="mt-4">
-                        <Button onClick={this.openAddGroupForm} variant="outline-primary">Создать группу</Button>
-                    </div>
+                    : <Button onClick={this.openAddGroupForm} variant="outline-primary" className="mt-4">Создать группу</Button>
             }
             <ListGroup className="mt-2">
                 {
