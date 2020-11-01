@@ -84,9 +84,9 @@ export async function getGroup(groupId) {
  */
 export async function postGroup(group) {
     try {
-        const response = await axiosInstance.post(`/groups`);
-        return response.data
+        await axiosInstance.post(`/groups`, group);
     } catch (err) {
+        console.error(err);
         return err;
     }
 }

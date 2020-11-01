@@ -51,7 +51,6 @@ export class GroupPage extends React.Component {
             <Link to={`/groups/${this.props.groupId}/tasks/${task.id}`}>
                 {task.name}
             </Link>
-
         </ListGroup.Item>
     }
 
